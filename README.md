@@ -10,10 +10,16 @@ To utilize WSL, open `cmd.exe` in Admin mode and execute the following command:
 wsl --install
 ```
 
-This command installs the required components, downloads the latest Linux kernel, sets WSL 2 as default, and installs a Linux distribution (Ubuntu by default). Restart your computer after the installation.
+This command installs the required components, downloads the latest Linux kernel, sets WSL 2 as default, and installs a Linux distribution (Ubuntu by default). 
+
+Restart your computer after the installation.
+
+You'll have to make a UN & PW for the new Ubuntu terminal.
 
 ### 📀 Installing Node.js.
-Access the Ubuntu Terminal by searching for "Ubuntu" in your Start menu. Follow [this guide](https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl) or use these commands to install Node.js using nvm:
+Access the Ubuntu Terminal by searching for "Ubuntu" in your Start menu. 
+
+Follow [this guide](https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl) or use these commands to install Node.js using nvm:
 
 ```
 // Install Curl
@@ -31,7 +37,9 @@ command -v nvm
 nvm install --lts
 ```
 
-Remember to run all terminal commands in the Ubuntu Terminal from now on.
+**
+**Remember to run all terminal commands in the Ubuntu Terminal from now on.**
+**
 
 ### 🦀 Install Rust.
 
@@ -63,8 +71,9 @@ If these commands output versions without errors, Rust is installed successfully
 
 ### 🔥 Install Solana
 
-Follow the steps [here](https://docs.solana.com/cli/install-solana-cli-tools#use-solanas-install-tool) to install the Solana CLI for Linux. After installation, run:
+Follow the steps [here](https://docs.solana.com/cli/install-solana-cli-tools#use-solanas-install-tool) to install the Solana CLI for Linux. 
 
+After installation, run:
 
 ```bash
 solana --version
