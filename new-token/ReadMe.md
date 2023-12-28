@@ -121,3 +121,19 @@ spl-token supply 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9 --url devnet
 
 We only minted 1000 tokens so that makes sense our circulating supply would match. 
 
+Solana allows us to be able to disable our minting authority and never get it back. 
+
+```
+spl-token authorize 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9 mint --disable --url devnet
+```
+
+If we try to mint new tokens now... we'll get the following error:
+
+![image](https://github.com/jvick1/Rust_Intro/assets/32043066/548d7398-94e9-41ab-a941-56f84534d2f2)
+
+We can also burn tokens and they can never be used again. You cannot remove tokens other people own. 
+To remove our tokens we can run `spl-token burn account_address qty`:
+
+```
+spl-token burn Gv973WS7UKmtY8brP7Yv7cwKfK5cSNJij8xJSnBdNYJv 100 --url devnet
+```
