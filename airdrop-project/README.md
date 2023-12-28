@@ -86,6 +86,16 @@ console.log(secretKey)
 
 Web3.js has a class `PublicKey` let's create a `new` one on our current `publicKey`. 
 
+Back to your Ubuntu terminal let's run the `index.js` file
+
+```
+node index.js
+```
+
+The result should be something like this:
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/a992047a-b855-4052-8c9b-e4c4a497d6ea)
+
 ## Get Balance of Wallet
 
 IN PROGRESS...
