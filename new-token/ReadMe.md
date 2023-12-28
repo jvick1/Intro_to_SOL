@@ -73,7 +73,7 @@ Result:
 
 ***Make sure you copy the Address down this is how you can find additional info about your token.***
 
-My token address is: 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9
+**My token address is:** `9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9`
 
 ## Mint your Token
 
@@ -92,7 +92,7 @@ spl-token create-account 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9 --url devn
 
 ![image](https://github.com/jvick1/Rust_Intro/assets/32043066/04ac2f80-3327-4c7e-95a9-90ef86ed6797)
 
-`Gv973WS7UKmtY8brP7Yv7cwKfK5cSNJij8xJSnBdNYJv` represents the address of the empty token account in our wallet. 
+**My Token account address:** `Gv973WS7UKmtY8brP7Yv7cwKfK5cSNJij8xJSnBdNYJv` represents the address of the empty token account in our wallet. 
 Make sure you copy this address down somewhere because you'll need it later.
 
 Now let's check how many tokens we have in that newly created account:
@@ -113,4 +113,11 @@ Now we minted ourselves 1,000 new tokens and to confirm this we can 1. get our b
 
 ## Total Supply & Burning Tokens
 
-IN PROGRESS...
+To check the supply of your token enter:
+
+```
+spl-token supply 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9 --url devnet
+```
+
+We only minted 1000 tokens so that makes sense our circulating supply would match. 
+
