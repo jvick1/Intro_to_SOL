@@ -141,3 +141,13 @@ spl-token burn Gv973WS7UKmtY8brP7Yv7cwKfK5cSNJij8xJSnBdNYJv 100 --url devnet
 re-checking our balance we can see 100 tokens have been removed.
 
 ![image](https://github.com/jvick1/Rust_Intro/assets/32043066/b953a5b1-7a04-46da-9dfb-230c9d37d8c2)
+
+## Sending Tokens
+
+`spl-token transfer token_address qty reveiver_wallet --url devnet --allow-unfunded-recipient --fund-recipient`
+
+```
+spl-token transfer 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9 150 7i7kqiYzBhP5kMWBn3cSKoTADqmsT1qabvLGDcC6pFnn --url devnet --allow-unfunded-recipient --fund-recipient
+```
+
+![image](https://github.com/jvick1/Rust_Intro/assets/32043066/4b8d5914-81c0-45b7-928f-840264d2449c)
