@@ -182,4 +182,78 @@ Returning to our Ubuntu terminal let's run the `index.js` file:
 
 NOTE: This can be done once every 24hrs!
 
-IN PROGRESS....
+In this section, we will define an additional asynchronous function utilizing the `async/await` pattern. 
+This function is designed to establish a connection with the Solana devnet and initiate a request for a financial airdrop in $SOL. 
+As a best practice, we will encapsulate the entire process within a try-catch block to ensure robust error handling.
+
+```
+//index.js
+
+const airDropSol = async() => {
+    try {
+        const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
+        const fromAirDropSignature = await connection.requestAirdrop(publicKey, 2 * LAMPORTS_PER_SOL)
+        await connection.confirmTransaction(fromAirDropSignature)
+    } catch(err) {
+        console.log(err)
+    }
+}
+```
+
+I am requesting 2 $SOL. Again we have to take Lamports into account so I multiply `2 * LAMPORTS_PER_SOL`. Feel free to request more or less.
+
+Now in the main function let's add `await airDropSol()` and re-check the `getWalletBalance()`.
+
+The result should look something like this:
+
+```
+//index.js
+
+const {
+    Connection,
+    PublicKey,
+    clusterApiUrl,
+    Keypair,
+    LAMPORTS_PER_SOL
+} = require("@solana/web3.js")
+
+const wallet = new Keypair()
+
+const publicKey = new PublicKey(wallet._keypair.publicKey)
+
+const getWalletBalance = async() => {
+    try {
+        const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
+        const walletBalance = await connection.getBalance(publicKey) 
+        console.log(`Wallet: ${publicKey.toString()} \nBalance: ${walletBalance / LAMPORTS_PER_SOL} $SOL`)
+    } catch(err) {
+        console.error(err)
+    }
+}
+
+const airDropSol = async() => {
+    try {
+        const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
+        const fromAirDropSignature = await connection.requestAirdrop(publicKey, 2 * LAMPORTS_PER_SOL)
+        await connection.confirmTransaction(fromAirDropSignature)
+    } catch(err) {
+        console.log(err)
+    }
+}
+
+const main = async() => {
+    await getWalletBalance()
+    await airDropSol()
+    await getWalletBalance()
+}
+
+main()
+```
+
+Once your `index.js` file is updated head back to our Ubuntu terminal and run the following:
+
+```
+node index.js
+```
+
+*TIP: Visit https://explorer.solana.com/?cluster=devnet and enter in the wallet address to see the transactions on Devnet.*
