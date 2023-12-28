@@ -102,4 +102,80 @@ The `Uint8Array(32)` is your public and `Uint8Array(64)` is your secret key.
 
 ## Get Balance of Wallet
 
-IN PROGRESS...
+In this section, we'll craft an asynchronous function utilizing the `async/await` syntax. 
+This function is designed to establish a connection with the Solana devnet and retrieve the current balance associated with our wallet. 
+To enhance the robustness of our code, we'll encapsulate the entire process within a try-catch block, adhering to best practices for error handling.
+At this point feel free to comment out the two console logs we made in the last step.
+
+```
+//index.js
+
+const getWalletBalance = async() => {
+    try {
+        const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
+        const walletBalance = await connection.getBalance(publicKey) 
+        console.log(`Wallet: ${publicKey.toString()} \nBalance: ${walletBalance / LAMPORTS_PER_SOL} $SOL`)
+    } catch(err) {
+        console.error(err)
+    }
+}
+```
+
+The big thing to note here is that the wallet balance would return in lamports so we can divide by `LAMPORTS_PER_SOL` to get our $SOL result.
+
+Now we just need a new function `main` that will call `getWalletBalance()` and trigger our code to run.
+
+```
+//index.js
+
+const main = async() => {
+    await getWalletBalance()
+}
+
+main()
+```
+
+The final result should look something like this:
+
+```
+//index.js
+
+const {
+    Connection,
+    PublicKey,
+    clusterApiUrl,
+    Keypair,
+    LAMPORTS_PER_SOL
+} = require("@solana/web3.js")
+
+const wallet = new Keypair()
+
+const publicKey = new PublicKey(wallet._keypair.publicKey)
+
+const getWalletBalance = async() => {
+    try {
+        const connection = new Connection(clusterApiUrl('devnet'), 'confirmed')
+        const walletBalance = await connection.getBalance(publicKey) 
+        console.log(`Wallet: ${publicKey.toString()} \nBalance: ${walletBalance / LAMPORTS_PER_SOL} $SOL`)
+    } catch(err) {
+        console.error(err)
+    }
+}
+
+const main = async() => {
+    await getWalletBalance()
+}
+
+main()
+
+```
+
+In summary, this script initializes a Solana wallet, fetches its balance from the Solana devnet, and logs the wallet's public key and balance to the console. It also includes error handling to manage potential issues during the process.
+It does so with an asynchronous `main` function that calls `getWalletBalance`. The `main` function is invoked, triggering the process of connecting to the Solana devnet and retrieving the wallet balance.
+At this point, our wallet should return 0. Next, let's airdrop some $SOL to the wallet and see how things change.
+
+## Airdrop yourself some SOL
+
+NOTE: This can be done once every 24hrs!
+
+IN PROGRESS....
