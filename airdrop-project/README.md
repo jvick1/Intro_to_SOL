@@ -86,6 +86,8 @@ console.log(secretKey)
 
 Web3.js has a class `PublicKey` let's create a `new` one on our current `publicKey`. 
 
+*TIP: We could also do `console.log(publicKey.toString())` which will show us the wallet address you typically see on Phantom Wallet.*
+
 Back to your Ubuntu terminal let's run the `index.js` file
 
 ```
