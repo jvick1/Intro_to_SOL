@@ -96,6 +96,8 @@ The result should be something like this:
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/a992047a-b855-4052-8c9b-e4c4a497d6ea)
 
+The `Uint8Array(32)` is your public and `Uint8Array(64)` is your secret key. 
+
 ## Get Balance of Wallet
 
 IN PROGRESS...
