@@ -137,3 +137,7 @@ To remove our tokens we can run `spl-token burn account_address qty`:
 ```
 spl-token burn Gv973WS7UKmtY8brP7Yv7cwKfK5cSNJij8xJSnBdNYJv 100 --url devnet
 ```
+
+re-checking our balance we can see 100 tokens have been removed.
+
+![image](https://github.com/jvick1/Rust_Intro/assets/32043066/b953a5b1-7a04-46da-9dfb-230c9d37d8c2)
