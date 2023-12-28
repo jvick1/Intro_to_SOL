@@ -77,4 +77,40 @@ My token address is: 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9
 
 ## Mint your Token
 
+We have a token now but we need to mint some. How do we do this? Do you remember what accounts are? Accounts allow us to store data on the blockchain.
+
+In summary, accounts on the Solana blockchain are digital entities that play a crucial role in representing ownership, executing smart contracts, and managing assets on the network. They are fundamental to the functionality and decentralized nature of the Solana ecosystem.
+
+***In a Solana wallet to collect a specific type of token we need an account in our wallet that is specific for that token and can hold that token type. Wallets can have multiple accounts and each account is used to transact one type of token.***   
+
+For our wallet, we need to create an account that can hold the new token we just made, 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9. 
+To do this run:
+
+```
+spl-token create-account 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9 --url devnet
+```
+
+![image](https://github.com/jvick1/Rust_Intro/assets/32043066/04ac2f80-3327-4c7e-95a9-90ef86ed6797)
+
+`Gv973WS7UKmtY8brP7Yv7cwKfK5cSNJij8xJSnBdNYJv` represents the address of the empty token account in our wallet. 
+Make sure you copy this address down somewhere because you'll need it later.
+
+Now let's check how many tokens we have in that newly created account:
+
+```
+spl-token balance 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9 --url devnet
+```
+
+We should get `0`. Let's increase this by minting some tokens!
+
+```
+spl-token mint 9eRq7qhj8GgBp2ytYnZD1DpyeuFgGtb15sfDfgiYTsL9 1000 --url devnet
+```
+
+Now we minted ourselves 1,000 new tokens and to confirm this we can 1. get our balance again or 2. go back to any of the Solana Explores and navigate to our wallet address. 
+
+![image](https://github.com/jvick1/Rust_Intro/assets/32043066/169fbb52-9369-4cab-adcc-f9b34b27be9d)
+
+## Total Supply & Burning Tokens
+
 IN PROGRESS...
