@@ -1,3 +1,6 @@
+//follow the steps in the README.md file before running this
+//you'll need the default project and packages downloaded in the 'Environment Set-up` section
+
 const {
     Connection,
     PublicKey,
