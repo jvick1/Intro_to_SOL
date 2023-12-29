@@ -182,7 +182,7 @@ Returning to our Ubuntu terminal let's run the `index.js` file:
 
 ![image](https://github.com/jvick1/Rust_Intro/assets/32043066/84f5f1c4-edef-44c9-8580-67332e7eb787)
 
-In summary, this script initializes a Solana wallet, fetches its balance from the Solana devnet, and logs the wallet's public key and balance to the console. It also includes error handling to manage potential issues during the process.
+**In summary, this script initializes a Solana wallet, fetches its balance from the Solana devnet, and logs the wallet's public key and balance to the console. It also includes error handling to manage potential issues during the process.**
 It does so with an asynchronous `main` function that calls `getWalletBalance`. The `main` function is invoked, triggering the process of connecting to the Solana devnet and retrieving the wallet balance.
 At this point, our wallet should return 0. Next, let's airdrop some $SOL to the wallet and see how things change.
 
