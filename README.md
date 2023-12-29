@@ -12,7 +12,7 @@ wsl --install
 
 This command installs the required components, downloads the latest Linux kernel, sets WSL 2 as default, and installs a Linux distribution (Ubuntu by default). 
 
-Restart your computer after the installation.
+**Restart your computer after the installation.**
 
 You'll have to make a UN & PW for the new Ubuntu terminal.
 
