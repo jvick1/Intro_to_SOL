@@ -61,9 +61,10 @@ const wallet = new Keypair()
 
 ## Retrieve Wallet's Credentials
 
-Now that we have a wallet let's look at our public and secret keys. Make sure you never share your secret keys this is just a demo wallet.
+Now that we have a wallet let's look at our public and secret keys. 
+Make sure you never share your secret keys this is just a demo wallet.
 
-To do this let's call `wallet._keypair.{KEY}` then `console.log()` them. 
+To do this let's call `wallet._keypair.{KEY}` then `console.log()` them like so:
 
 ```
 //index.js
@@ -84,7 +85,11 @@ console.log(publicKey)
 console.log(secretKey)
 ```
 
-Web3.js has a class `PublicKey` let's create a `new` one on our current `publicKey`. 
+There is a lot to unpack here... but let's first focus on the `const publicKey = new PublicKey(wallet._keypair.publicKey)`.
+
+Web3.js has a class/object called `PublicKey(...)` here the `PublicKey` class is used to represent a wallet's `public key` on the Solana blockchain.
+So, the line of code is essentially creating a PublicKey object based on the public key associated with a Solana wallet. 
+This PublicKey object can then be used in various Solana transactions and interactions with the blockchain.
 
 Back to your Ubuntu terminal let's run the `index.js` file
 
@@ -98,14 +103,15 @@ The result should be something like this:
 
 The `Uint8Array(32)` is your public and `Uint8Array(64)` is your secret key. 
 
-*TIP: We could also do `console.log(publicKey.toString())` which will show us the wallet address you typically see on Phantom Wallet.*
+***TIP: We could also do `console.log(publicKey.toString())` which will show us the wallet address you typically see on Phantom Wallet.***
 
 ## Get Balance of Wallet
 
+At this point feel free to comment out the two console logs we made in the last step with `//`. Now that everything is cleaned up let's make our first function...
+
 In this section, we'll craft an asynchronous function utilizing the `async/await` syntax. 
-This function is designed to establish a connection with the Solana devnet and retrieve the current balance associated with our wallet. 
-To enhance the robustness of our code, we'll encapsulate the entire process within a try-catch block, adhering to best practices for error handling.
-At this point feel free to comment out the two console logs we made in the last step.
+**This function is designed to establish a connection with the Solana devnet and retrieve the current balance associated with our wallet.**
+To enhance the robustness of our code, we'll encapsulate the entire process within a try-catch block, adhering to **best practices** for error handling.
 
 ```
 //index.js
@@ -121,7 +127,7 @@ const getWalletBalance = async() => {
 }
 ```
 
-The big thing to note here is that the wallet balance would return in lamports so we can divide by `LAMPORTS_PER_SOL` to get our $SOL result.
+***NOTE: The wallet balance would return in lamports so we can divide by `LAMPORTS_PER_SOL` to get our $SOL result.***
 
 Now we just need a new function `main` that will call `getWalletBalance()` and trigger our code to run.
 
@@ -135,7 +141,9 @@ const main = async() => {
 main()
 ```
 
-The final result should look something like this:
+When `main()` is invoked, it starts the execution of the `main` function, and since it is an asynchronous function with the `await` keyword, it will wait for the `getWalletBalance` function to complete its execution before moving on. This is because `await` is used to pause the execution of the `main` function until the promise returned by `getWalletBalance` is resolved.
+
+**The final result should look something like this:**
 
 ```
 //index.js
@@ -170,17 +178,17 @@ main()
 
 ```
 
-In summary, this script initializes a Solana wallet, fetches its balance from the Solana devnet, and logs the wallet's public key and balance to the console. It also includes error handling to manage potential issues during the process.
-It does so with an asynchronous `main` function that calls `getWalletBalance`. The `main` function is invoked, triggering the process of connecting to the Solana devnet and retrieving the wallet balance.
-At this point, our wallet should return 0. Next, let's airdrop some $SOL to the wallet and see how things change.
-
 Returning to our Ubuntu terminal let's run the `index.js` file:
 
 ![image](https://github.com/jvick1/Rust_Intro/assets/32043066/84f5f1c4-edef-44c9-8580-67332e7eb787)
 
+In summary, this script initializes a Solana wallet, fetches its balance from the Solana devnet, and logs the wallet's public key and balance to the console. It also includes error handling to manage potential issues during the process.
+It does so with an asynchronous `main` function that calls `getWalletBalance`. The `main` function is invoked, triggering the process of connecting to the Solana devnet and retrieving the wallet balance.
+At this point, our wallet should return 0. Next, let's airdrop some $SOL to the wallet and see how things change.
+
 ## Airdrop yourself some SOL
 
-NOTE: This can be done once every 24hrs!
+***NOTE: This can be done once every 24hrs!***
 
 In this section, we will define an additional asynchronous function utilizing the `async/await` pattern. 
 This function is designed to establish a connection with the Solana devnet and initiate a request for a financial airdrop in $SOL. 
@@ -204,7 +212,7 @@ I am requesting 2 $SOL. Again we have to take Lamports into account so I multipl
 
 Now in the main function let's add `await airDropSol()` and re-check the `getWalletBalance()`.
 
-The result should look something like this:
+**The result should look something like this:**
 
 ```
 //index.js
