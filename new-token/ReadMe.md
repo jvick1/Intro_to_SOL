@@ -1,4 +1,4 @@
-# PROJECT #2: CREATE & MINT YOUR OWN TOKEN
+# PROJECT #2: CREATE & MINT YOUR OWN TOKEN CLI
 
 If you are following along you should already have Solana installed. 
 First, do a `cd ..` just to make sure you are no longer in the `airdrop-project`. 
