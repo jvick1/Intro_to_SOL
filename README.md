@@ -1,3 +1,9 @@
+# OUTLINE
+1. Set up full-stack (current README.md)
+2. airdrop-project
+3. new-token
+4. sol-program
+
 ## Setting up Solana on a Windows machine.
 
 This guide will walk you through the process of setting up the Solana environment on your local Windows machine. Please note that while Anchor does not currently support Windows, we'll leverage the Windows Subsystem for Linux (WSL) to create a Linux environment for Solana development.
