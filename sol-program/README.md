@@ -25,11 +25,41 @@ And open the project in VScode;
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/0749ae1b-b41a-44fe-bb2c-2cb7a837d7c8)
 
+This is the default program that Anchor has provided. Simply, have a user-defined function called `initialize(...)` whenever initialize is called it successfully exits the program. 
+
 ## Anchor Project
+
+With the project environment configured, we can proceed by navigating to the project directory using the terminal. Execute the following command:
+
+```
+cd sol-program
+```
 
 ### Build
 
+Once inside the project directory, the next step is to build the project using the Anchor framework. Initiate the build process with the following command:
+
+```
+anchor build
+```
+
+**This command triggers the compilation of the Rust code and generates the necessary artifacts for deploying and interacting with the Solana program.** Successful execution of the `anchor build` command is crucial for ensuring that the project is correctly compiled and ready for deployment. Any error messages or warnings during this process should be carefully addressed to guarantee the reliability and functionality of the deployed Solana program.
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/62178822-4135-4962-8950-901eec8b5b11)
+
+I got an error on my first try. After a quick Google search, I found the solution, adding `ahash = "=0.8.6"` to my `sol-program/programs/sol-program/Cargo.toml` file.
+
+A successful build will;
+1. Return `Finished` in the terminal and...
+2. Populate `sol-program/target/idl/sol_program.json`
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/5b02866a-44d2-4bfa-9933-c325edd80f83)
+
+The idl folder defines the interface description language, detailing contract instructions. It aids testing and facilitates frontend integration. Now, let's test our Solana program using Anchor. Testing ensures code reliability, and the IDL serves as a guide, aligning expectations with contract behavior. 
+
 ### Test
+
+IN PROGRESS...
 
 ## Create Function
 
