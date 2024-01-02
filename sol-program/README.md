@@ -63,13 +63,11 @@ In `sol-program/tests/sol-program.ts` we can find the test script that gets auto
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/83d8f0e2-cc3f-4dde-b557-5ada966abe36)
 
-Now to run this test type:
+Now, back in your terminal run `anchor test` to run our test code. If this runs successfully you should get a pass.
 
 ```
 anchor test
 ```
-
-If this runs successfully you should get a pass.
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/cd581216-3336-4ff2-940f-86ca532d5582)
 
