@@ -82,11 +82,11 @@ Let's now head back to `sol-program/programs/sol-grogram/src/lib.rs` and remove 
 
 Let's create our first function... this will be a public function called create `pub fn create()`. 
 
-The first argument of these functions are always context `ctx: Context<Create>`. **Remember that in Solana programs are stateless which means they can't hold data.** So, if you want to store data on Solana we have to create an account which is like a file where we can store data and we can put that account on the Blockchain. Then with our program, using code, we can retrieve the data that we want from that account. 
+The *first argument* of these functions are always context `ctx: Context<Create>`. **Remember that in Solana programs are stateless which means they can't hold data.** So, if you want to store data on Solana we have to create an account which is like a file where we can store data and we can put that account on the Blockchain. Then with our program, using code, we can retrieve the data that we want from that account. 
 
-The next argument will be a string called init_message `init_message: String`. This will be the greeting message displayed when we start this program. If any of this Rust code is confusing so far check out my intro to [Rust Repo](https://github.com/jvick1/Rust_Intro) I have a few intro projects there and I am adding more whenever I am not too lazy!
+The *next argument* will be a string called init_message `init_message: String`. This will be the greeting message displayed when we start this program. If any of this Rust code is confusing so far check out my intro to [Rust Repo](https://github.com/jvick1/Rust_Intro) I have a few intro projects there and I am adding more whenever I am not too lazy!
 
-The return type will be called ProgramResult. Inside the function, we can write `let calculator = &mut ctx.accounts.calculator;`. This lets us get our calculator account from context we specify `&mut` because we are going to modify this account. The next line is where we modify the account and we do that with `calculator.greeting = init_message;`.  Lastly, we use `Ok(())` to let Solana know everything was run successfully. Your `lib.rs` file should look something like this:
+The *return type* will be called ProgramResult. *Inside the function*, we can write `let calculator = &mut ctx.accounts.calculator;`. This lets us get our calculator account from context we specify `&mut` because we are going to modify this account. The next line is where we modify the account and we do that with `calculator.greeting = init_message;`.  Lastly, we use `Ok(())` to let Solana know everything was run successfully. Your `lib.rs` file should look something like this:
 
 ```
 //lib.rs
