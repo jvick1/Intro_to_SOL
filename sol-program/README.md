@@ -91,6 +91,7 @@ The *return type* will be called ProgramResult. *Inside the function*, we can wr
 ```
 //lib.rs
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::entrypoint::ProgramResult;
 
 declare_id!("3PrLAA3B2KJHJKLYxWVe4ihfbh6c3pwvzPsD5dEas7mw");
 
@@ -104,6 +105,8 @@ pub mod sol_program {
     }
 }
 ```
+
+**Be sure to add `use anchor_lang::solana_program::entrypoint::ProgramResult;`**
 
 And there we go! You have written your first Solana Function!
 
@@ -124,6 +127,7 @@ Here's the code snippet:
 ```
 //lib.rs
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::entrypoint::ProgramResult;
 
 declare_id!("3PrLAA3B2KJHJKLYxWVe4ihfbh6c3pwvzPsD5dEas7mw");
 
@@ -159,6 +163,7 @@ We want to keep track of 3 things in our Calculator DApp.
 ```
 //lib.rs
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::entrypoint::ProgramResult;
 
 declare_id!("3PrLAA3B2KJHJKLYxWVe4ihfbh6c3pwvzPsD5dEas7mw");
 
