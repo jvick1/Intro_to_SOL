@@ -106,3 +106,93 @@ pub mod sol_program {
 ```
 
 And there we go! You have written your first Solana Function!
+
+## Context of our "Create" Function
+
+The `create()` function in our Solana program plays a crucial role in managing the creation of accounts and the storage of vital data. In the Solana ecosystem, direct data storage within a program is not supported; therefore, dedicated accounts are essential for this purpose. The function takes a `ctx` parameter of type `Context<Create>`, representing a curated list of all the accounts needed for data retrieval.
+
+Now, let's delve into specifying the accounts that constitute the context for the `create()` function. In our `lib.rs` file, under the program section, we employ a `#[derive(Accounts)]` [procedural macro](https://doc.rust-lang.org/reference/procedural-macros.html) to generate code at compile-time. This macro streamline the definition of our context, encapsulated in a `pub struct create<'info>{}`.
+
+Within this struct, we define the accounts required for the `create()` function. For instance, a `calculator` account is introduced with attributes set by the `#[account(init, payer=user, space=264)]` macro. This macro initializes a new calculator account, designates the user as the payer responsible for the associated transaction cost, and allocates a specific space on the Solana Blockchain for the calculator account.
+
+To ensure proper transaction signing, we include the `user` account as a `Signer` with `pub user: Signer<'info>`.
+
+Lastly, the system program specifications for the Solana blockchain are incorporated with `pub system_program: Program<'info, System>`. It is crucial to mark the user account as mutable for proper functionality, achieved through `#[account(mut)]`.
+
+Here's the code snippet:
+
+```
+//lib.rs
+use anchor_lang::prelude::*;
+
+declare_id!("3PrLAA3B2KJHJKLYxWVe4ihfbh6c3pwvzPsD5dEas7mw");
+
+#[program]
+pub mod sol_program {
+    use super::*;
+    pub fn create(ctx: Context<Create>, init_message: String) -> ProgramResult {
+        let calculator = &mut ctx.accounts.calculator;
+        calculator.greeting = init_message;
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+pub struct Create<'info>{
+    #[account(init, payer=user, space=264)]
+    pub calculator: Account<'info, Calculator>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>
+}
+```
+
+This structured and detailed context definition ensures a clear and functional integration of the `create()` function within our Solana program. Now, we just have to specify what the Account structure looks like...
+
+## Specify the Account Structure 
+
+We want to keep track of 3 things in our Calculator DApp.
+1. The **greeting** message `init_message`
+2. The **result** of whatever mathematical operation we're performing
+3. The **remainder** if we are doing a division
+
+```
+//lib.rs
+use anchor_lang::prelude::*;
+
+declare_id!("3PrLAA3B2KJHJKLYxWVe4ihfbh6c3pwvzPsD5dEas7mw");
+
+#[program]
+pub mod sol_program {
+    use super::*;
+    pub fn create(ctx: Context<Create>, init_message: String) -> ProgramResult {
+        let calculator = &mut ctx.accounts.calculator;
+        calculator.greeting = init_message;
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+pub struct Create<'info>{
+    #[account(init, payer=user, space=264)]
+    pub calculator: Account<'info, Calculator>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>
+}
+
+#[account]
+pub struct Calculator {
+    pub greeting: String,
+    pub result: i64,
+    pub remainder: i64
+}
+```
+
+## Write a Mocha Test
+
+Heading to our `tests/sol-program.ts` let's clear everything in this file and start from scratch. The first step is to import the needed libraries. You'll get some errors from VScode to solve this change the TypeScript (ts) file to a JavaScript (js) file. 
+
+![image](https://github.com/jvick1/Rust_Intro/assets/32043066/7cde434f-ae0e-4085-91a4-b76f8f854b4b)
+
+Now because we are going to be using Mocha to test our program so let's set up the skeleton...
