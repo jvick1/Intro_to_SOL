@@ -52,7 +52,7 @@ In the picture above, I show the **error** that I got on my run and how I solved
 2. After a quick Google search, I found the solution,
 3. adding `ahash = "=0.8.6"` to my `sol-program/programs/sol-program/Cargo.toml` file.
 
-A **successful** build will;
+A **successful** build will look like the image below:
 1. Return `Finished` in the terminal and...
 2. Populate `sol-program/target/idl/sol_program.json`
 
