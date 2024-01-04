@@ -77,3 +77,4 @@ Let's now head back to `sol-program/programs/sol-grogram/src/lib.rs` and remove 
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/f164b9d5-438c-4ece-9fd8-2cc3e0569da1)
 
+Let's create our first function...
