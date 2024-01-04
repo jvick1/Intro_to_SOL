@@ -47,9 +47,12 @@ anchor build
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/62178822-4135-4962-8950-901eec8b5b11)
 
-I got an error on my first try. After a quick Google search, I found the solution, adding `ahash = "=0.8.6"` to my `sol-program/programs/sol-program/Cargo.toml` file.
+In the picture above, I show the **error** that I got on my run and how I solved it:
+1. I got an error on my first try.
+2. After a quick Google search, I found the solution,
+3. adding `ahash = "=0.8.6"` to my `sol-program/programs/sol-program/Cargo.toml` file.
 
-A successful build will;
+A **successful** build will;
 1. Return `Finished` in the terminal and...
 2. Populate `sol-program/target/idl/sol_program.json`
 
