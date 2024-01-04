@@ -55,7 +55,7 @@ A successful build will;
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/5b02866a-44d2-4bfa-9933-c325edd80f83)
 
-The idl folder defines the interface description language, detailing contract instructions. It aids testing and facilitates frontend integration. Now, let's test our Solana program using Anchor. Testing ensures code reliability, and the IDL serves as a guide, aligning expectations with contract behavior. 
+The idl folder defines the interface description language, detailing contract instructions. It aids testing and facilitates front-end integration. Now, let's test our Solana program using Anchor. Testing ensures code reliability, and the IDL serves as a guide, aligning expectations with contract behavior. 
 
 ### Test
 
@@ -72,4 +72,8 @@ anchor test
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/cd581216-3336-4ff2-940f-86ca532d5582)
 
 ## Create Function
+
+Let's now head back to `sol-program/programs/sol-grogram/src/lib.rs` and remove the public function initialize `pub fn initialize(...)` and the public structure that calls initialize `pub struct Initialize {}`. Below I have an example of what the file, `lib.rs` should look like before (left) and after we clean it up (right). 
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/f164b9d5-438c-4ece-9fd8-2cc3e0569da1)
 
