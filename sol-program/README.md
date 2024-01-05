@@ -300,3 +300,118 @@ anchor test
 ```
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/6ef624f6-9be0-49a1-bf5e-f28baafa9e13)
+
+## The "Addition" Function
+
+Now that everything is up and running let's make an addition function and test that. 
+
+Back in our `/src/lib.rs` file and under the `create()` function let's go ahead and create a `pub fn add()` function. We'll be pulling in different accounts so we'll say `ctx: Context<Addition>` and for the next two arguments we'll add in the two numbers that get added ie `num1: i64` and `num2: i64`. Then inside the function let's add the two values together and run `Ok(())` to make sure everything runs correctly. 
+
+```
+   pub fn add(ctx: Context<Addition>, num1: i64, num2: i64) -> ProgramResult {
+        let calculator = &mut ctx.accounts.calculator;
+        calculator.result = num1 + num2;
+        Ok(())
+    }
+```
+
+Next, we have to add another `#[derive(Accounts)]` to structure the Addition context. For this we need a mutable public calculator account similar to our Create structure but with only one argument. 
+
+```
+#[derive(Accounts)]
+pub struct Addition<'info> {
+    #[account(mut)]
+    pub calculator: Account<'info, Calculator>
+}
+```
+
+All together your final `lib.rs` file should look like this:
+
+```
+use anchor_lang::prelude::*;
+use anchor_lang::solana_program::entrypoint::ProgramResult;
+
+declare_id!("3PrLAA3B2KJHJKLYxWVe4ihfbh6c3pwvzPsD5dEas7mw");
+
+#[program]
+pub mod sol_program {
+    use super::*;
+    pub fn create(ctx: Context<Create>, init_message: String) -> ProgramResult {
+        let calculator = &mut ctx.accounts.calculator;
+        calculator.greeting = init_message;
+        Ok(())
+    }
+    pub fn add(ctx: Context<Addition>, num1: i64, num2: i64) -> ProgramResult {
+        let calculator = &mut ctx.accounts.calculator;
+        calculator.result = num1 + num2;
+        Ok(())
+    }
+}
+
+#[derive(Accounts)]
+pub struct Create<'info>{
+    #[account(init, payer=user, space=264)]
+    pub calculator: Account<'info, Calculator>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>
+}
+
+#[derive(Accounts)]
+pub struct Addition<'info> {
+    #[account(mut)]
+    pub calculator: Account<'info, Calculator>
+}
+
+#[account]
+pub struct Calculator {
+    pub greeting: String,
+    pub result: i64,
+    pub remainder: i64
+}
+```
+
+## Testing the Addition Function
+
+For this let's again head back to our `tests/sol-program.ts`. To add a test we add a new `it()` block. This block is structured very similarly to our previous but the key difference is that we are using anchor big numbers to define our inputs. 
+
+```
+const assert = require('assert');
+const anchor = require('@project-serum/anchor');
+const { SystemProgram } = anchor.web3;
+
+describe('sol_program', () => {
+    const provider = anchor.getProvider();
+    anchor.setProvider(provider);
+
+    const calculator = anchor.web3.Keypair.generate();
+    const program = anchor.workspace.SolProgram;
+
+    it('Creates a calculator', async() => {
+        await program.rpc.create("Welcome to Solana", {
+            accounts: {
+                calculator: calculator.publicKey,
+                user: provider.wallet.publicKey,
+                systemProgram: SystemProgram.programId
+            },
+            signers: [calculator]
+        });
+
+        const account = await program.account.calculator.fetch(calculator.publicKey);
+        assert.ok(account.greeting == "Welcome to Solana")
+    })
+    it('Adds two numbers', async() => {
+        await program.rpc.add(new anchor.BN(2), new anchor.BN(3), {
+            accounts: {
+                calculator: calculator.publicKey
+            }
+        })
+        const account = await program.account.calculator.fetch(calculator.publicKey)
+        assert.ok(account.result.eq(new anchor.BN(5)))
+    })
+})
+```
+
+Once this is updated we are ready to run the `anchor test` again. 
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/08ccf4db-a604-4ccd-8941-857fc70bb348)
