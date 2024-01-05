@@ -4,6 +4,8 @@
 
 This project aims to develop a **decentralized application (DApp)** featuring a **calculator** implemented in **Rust**. We'll create a test using Mocha written in JavaScript, ensuring robust code validation. The following is necessary **prerequisites**—Node.js, Solana, Rust, Anchor, and Mocha—have been outlined and documented in the initial ReadMe.md of this repository.
 
+This might look like a lot of text but we are just using two files, `/src/lib.rs` (our function) and `sol-program.ts` (our test).
+
 **INTRO:**
 
 In the context of Solana, **programs represent the code executed on the Solana Blockchain**. Notably, Solana programs are inherently "stateless," signifying their inability to store data. To circumvent this limitation, the solution involves the utilization of accounts. These **accounts serve as virtual "files" stored on the Solana Blockchain**, enabling essential data storage for the calculator DApp. This approach ensures efficient data management within the Solana ecosystem while adhering to the platform's architectural principles.
@@ -14,9 +16,6 @@ In the context of Solana, **programs represent the code executed on the Solana B
  ```
 anchor init sol-program
 ```
-
-![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/646c359c-495f-4aba-9d54-02d4fc312600)
-
 
 And open the project in VScode; 
 1. Navigate to the Remote Explorer 
@@ -47,12 +46,12 @@ anchor build
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/62178822-4135-4962-8950-901eec8b5b11)
 
-In the picture above, I show the **error** that I got on my run and how I solved it:
+#### In the picture above, I show the **error** that I got on my run and how I solved it:
 1. I got an error on my first try.
 2. After a quick Google search, I found the solution,
 3. adding `ahash = "=0.8.6"` to my `sol-program/programs/sol-program/Cargo.toml` file.
 
-A **successful** build will look like the image below:
+#### A **successful** build will look like the image below:
 1. Return `Finished` in the terminal and...
 2. Populate `sol-program/target/idl/sol_program.json`
 
@@ -272,3 +271,32 @@ describe('sol_program', () => {
 ```
 
 This testing script utilizes the `assert` library to validate that the greeting message of the newly created calculator account matches the expected value. The structured testing approach ensures the reliability and functionality of our Solana DApp.
+
+
+## Let's Test It!
+
+Back to our Ubuntu terminal let's go to our project:
+
+```
+cd sol-program
+```
+
+Check if we have a Solana Address:
+
+```
+solana address 
+```
+
+Airdrop some coins:
+
+```
+solana airdrop 2 --url devnet
+```
+
+And test:
+
+```
+anchor test
+```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/6ef624f6-9be0-49a1-bf5e-f28baafa9e13)
