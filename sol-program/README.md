@@ -418,4 +418,4 @@ Once this is updated we are ready to run the `anchor test` again.
 
 ## Challenge 
 
-Add `Subtraction`, `Multiplication`, and `Divisions`. Each of these needs a function, accounts, and a test `it()`. The full code of the `lib.rs` file and `sol-program.ts` test file will be uploaded to this repo. Please note that just downloading the final won't run you need to follow the steps and initialize the anchor project **THIS IS JUST TWO FILES OF THE FULL PROJECT**. 
+Add `Subtraction`, `Multiplication`, and `Divisions`. Each of these needs a function, accounts, and a test `it()`. Overall, it is a lot of copy-paste for the other functions. The divide function might be a little tricky just be sure to remember to use the remainder account we set up. The full code of the `lib.rs` file and `sol-program.ts` test file will be uploaded to this repo. Please note that just downloading the final won't run you need to follow the steps and initialize the anchor project **THIS IS JUST TWO FILES OF THE FULL PROJECT**. 
