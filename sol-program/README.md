@@ -196,8 +196,79 @@ pub struct Calculator {
 
 ## Write a Mocha Test
 
-Heading to our `tests/sol-program.ts` let's clear everything in this file and start from scratch. The first step is to import the needed libraries. You'll get some errors from VScode to solve this change the TypeScript (ts) file to a JavaScript (js) file. 
+Heading to our `tests/sol-program.ts` let's clear everything in this file and start from scratch. The first step is to import the needed libraries:
+1. **assert:** A Node.js built-in module that provides simple assertion testing functionality, commonly used for writing test cases in JavaScript and Node.js applications.
 
-![image](https://github.com/jvick1/Rust_Intro/assets/32043066/7cde434f-ae0e-4085-91a4-b76f8f854b4b)
+2. **anchor:** A TypeScript library for developing on the Solana blockchain, offering a high-level interface and tools for smart contract development and interaction with the Solana blockchain.
 
-Now because we are going to be using Mocha to test our program so let's set up the skeleton...
+3. **SystemProgram** (from anchor.web3): A module from the anchor.web3 package, specifically providing access to the Solana System Program, which includes functions for creating and interacting with system-level accounts and transactions on the Solana blockchain.
+
+```
+//tests/sol-program.ts
+const assert = require('assert');
+const anchor = require('@project-serum/anchor');
+const { SystemProgram } = anchor.web3;
+```
+
+You'll get some errors from VScode but don't worry too much it's just a  bug. 
+
+In JavaScript testing frameworks, such as Mocha and Jest, `describe()` and `it()` are functions commonly used for structuring and organizing test suites. The `describe()` function is used to group a set of related test cases or specifications. It takes two arguments: a string describing the test suite (often a feature or module name), and a callback function containing the actual test cases. The `it()` function is used for an individual test case or specification within a describe() block. It takes two arguments: a string describing the specific behavior being tested, and a callback function containing the actual test code.
+
+Let's define our `describe()` block first. We'll want to introduce a `provider` which is  an abstraction of a connection to a Solana network. 
+
+```
+describe('sol_program', () => {
+    const provider = anchor.getProvider();
+    anchor.setProvider(provider);
+})
+```
+
+Next, we'll create a variable for our calculator account by generating some Key Pair. We'll be using this to test our program but we need some credentials for the account we are creating so `const calculator = anchor.web3.Keypair.generate()` doesn't create or retrieve a calculator account yet but, it serves as a reference that we can call once created. Lastly, we'll make a `program` that serves as an abstraction to the Solana program we have written. If you are confused as to what should come after `anchor.workspace.xxx` just check out `target/types/sol_program.ts` it should be the very top `export type`. 
+
+```
+describe('sol_program', () => {
+    const provider = anchor.getProvider();
+    anchor.setProvider(provider);
+
+    const calculator = anchor.web3.Keypair.generate();
+    const program = anchor.workspace.SolProgram;
+})
+```
+
+Let's dive into the code for testing our DApp! Within the `describe()` block, we'll create our first `it()` block to initiate the testing process. Let's break down the `it('Creates a calculator', async() => {})` function. The first argument specifies the name of the individual test, while the second argument is a function where the actual testing occurs.
+
+Inside this function, we execute `await program.rpc.create()`, calling the `create()` function defined in `/src/lib.rs`. The essential parameters include the `init_message`, the context with our `accounts` (comprising calculator, user, and systemProgram), and the `signers`.
+
+Now that the calculator is created, we proceed to perform checks by fetching the account and confirming the accuracy of the greeting message.
+
+```
+//tests/sol-program.ts
+
+const assert = require('assert');
+const anchor = require('@project-serum/anchor');
+const { SystemProgram } = anchor.web3;
+
+describe('sol_program', () => {
+    const provider = anchor.getProvider();
+    anchor.setProvider(provider);
+
+    const calculator = anchor.web3.Keypair.generate();
+    const program = anchor.workspace.SolProgram;
+
+    it('Creates a calculator', async() => {
+        await program.rpc.create("Welcome to Solana", {
+            accounts: {
+                calculator: calculator.publicKey,
+                user: provider.wallet.publicKey,
+                systemProgram: SystemProgram.programId
+            },
+            signers: [calculator]
+        });
+
+        const account = await program.account.calculator.fetch(calculator.publicKey);
+        assert.ok(account.greeting == "Welcome to Solana")
+    })
+})
+```
+
+This testing script utilizes the `assert` library to validate that the greeting message of the newly created calculator account matches the expected value. The structured testing approach ensures the reliability and functionality of our Solana DApp.
