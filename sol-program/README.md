@@ -415,3 +415,7 @@ describe('sol_program', () => {
 Once this is updated we are ready to run the `anchor test` again. 
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/08ccf4db-a604-4ccd-8941-857fc70bb348)
+
+## Challenge 
+
+Add `subtraction`,`Multiplication`, and `Divisions`. Each of these needs a function, accounts, and a test `it()`. 
