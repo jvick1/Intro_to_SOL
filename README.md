@@ -3,6 +3,7 @@
 2. airdrop-project
 3. new-token
 4. sol-program
+5. crowdfunding
 
 ## Setting up Solana on a Windows machine.
 
