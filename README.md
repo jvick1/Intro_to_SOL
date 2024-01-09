@@ -2,7 +2,7 @@
 1. Set up full-stack (current README.md)
 2. airdrop-project
 3. new-token
-4. sol-program
+4. sol-program (calc)
 5. crowdfunding
 
 ## Setting up Solana on a Windows machine.
