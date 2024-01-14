@@ -95,16 +95,34 @@ This public function `create()` is client-callable, allowing external entities t
 
 Within the function, we retrieve our campaign account from the context using `let campaign = &mut ctx.accounts.campaign;`, indicating that we intend to modify this account. Subsequently, we update the campaign's name and description with user input, initialize the amount donated to zero, and set the admin as the user creating the campaign. Finally, `Ok(())` signals a successful execution of the function to Solana.
 
-## Section 3: Specify the `Context<...>` in our `create(...)` function
+## Section 3: Account Definitions in the 'Create' Struct
 
 Remember Solana Programs can't store data so any data that needs to be stored gets written into an account which is just like a file. The list of these accounts is our `Context<...>` for that function. So, the context of the `create(...)` function is the list of accounts it needs to retrieve data from. **What accounts will be part of the create functions context?**
 
-```
+**Below our crowdfunding module** let's define a struct named `Create` using the `#[derive(Accounts)]` macro attribute. In the context of Solana and Anchor framework, this struct represents the accounts that will be used as input to a particular program function. Let's break down the individual fields of this struct:
 
 ```
+//src/lib.rs
 
-Under our crowdfunding module, we'll create a new structure `struct` called `Create<'info>`. Above it we define a macro used to derive accounts `#[derive(Accounts)]` this `#` indicates that it is a context. 
+#[derive(Accounts)]
+pub struct Create<'info> {
+    #[account(init, payer = user, space = 9000, seeds=[b"CAMPAIGN_DEMO".as_ref(), user.key().as_ref()], bump)]
+    pub campaign: Account<'info, Campaign>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>
+}
+```
 
+- **`#[derive(Accounts)]`:** This attribute is used to automatically derive the implementation of the `Accounts` trait for the `Create` struct. The `Accounts` trait defines how account information is gathered and passed to an Anchor program function.
+
+- **`pub campaign: Account<'info, Campaign>`:** This field specifies an account named campaign of type `Account<'info, Campaign>`. This account is initialized with the `init` attribute, indicating that it's a new account to be created. The payer is set to `user`, specifying that the user's account will be responsible for the transaction cost of creating this account. The `space` attribute determines the amount of space to allocate for this account on the Solana blockchain. The `seeds` attribute is used to derive the address of the account, and the `bump` attribute specifies a bump seed for uniqueness (ie someone might have that addy bump until you find an unused addy). 
+
+- **`pub user: Signer<'info>`:** This field represents the user's account, marked as mutable (`mut`). The `Signer` trait indicates that this account must be a signer of the transaction, meaning the user must authorize the transaction for it to be valid.
+
+- **`pub system_program: Program<'info, System>`:** This field specifies the system program, which is a part of the Solana blockchain. It is used to interact with system-level functionality. The `Program<'info, System>` type indicates that this is a program account associated with the Solana System Program.
+
+In summary, the `Create` struct defines the accounts needed for a specific program function. The `campaign` account is a new account to be created, the `user` account is the signer of the transaction, and the `system_program` account is used for interacting with system-level features.
 
 
 
