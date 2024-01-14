@@ -125,5 +125,135 @@ pub struct Create<'info> {
 In summary, the `Create` struct defines the accounts needed for a specific program function. The `campaign` account is a new account to be created, the `user` account is the signer of the transaction, and the `system_program` account is used for interacting with system-level features.
 
 
+## Section 4: Campaign Struct
 
+In this section, we will define the values in `Campaign` if you are not sure what values are included check out the `create(...)` function. Start by defining a Solana account struct named Campaign using the `#[account]` attribute. This code will go under our `Account` code. Let's break down the individual fields of this struct:
 
+```
+#[account]
+pub struct Campaign {
+    pub admin: Pubkey,
+    pub name: String,
+    pub description: String,
+    pub amount_donated: u64
+}
+```
+
+- **`pub admin: Pubkey`:** This field represents the public key (Pubkey) of the account's administrator. 
+
+- **`pub name: String`:** This field holds a String representing the name of the campaign.
+
+- **`pub description: String`:** This field holds a String providing additional details or a description of the campaign.
+
+- **`pub amount_donated: u64`:** This field is of type u64 (unsigned 64-bit integer) and represents the total amount of funds donated to the campaign. It keeps track of the cumulative donations made to the campaign.
+
+Now back in Umbutu, we can try to build our project again. My first try I got an error and had to add `*` to my `ctx`. Below in the screenshot you can see what the full `lib.rs` file should look like and the terminal results for an error and a successful build. 
+
+```
+anchor build
+```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/bd6a568b-b38a-43ea-9f98-448275c40d88)
+
+## Section 5: Withdraw Function 
+
+In this section, we introduce the `withdraw` function within our crowdfunding module, building upon the foundation laid by the `create` function. The `withdraw` function, declared as a public function, operates within the context of `<Withdraw>`. Key points about the `withdraw` function:
+
+- It retrieves the `campaign` and `user` accounts from the context (`<Withdraw>`).
+- It ensures that **only the admin can withdraw funds** by comparing the admin's public key with the user's key.
+- It checks if there are **sufficient funds** in the campaign account for withdrawal.
+- It calculates the minimum balance required to keep the campaign account active using the Rent API.
+- If all checks pass, it deducts the specified amount from the campaign account and transfers it to the user's account.
+
+```
+ pub fn withdraw(ctx: Context<Withdraw>, amount: u64) -> ProgramResult {
+     let campaign = &mut ctx.accounts.campaign;
+     let user = &mut ctx.accounts.user;
+     if campaign.admin != *user.key {
+         return Err(ProgramError::IncorrectProgramId);
+     }
+     let rent_balance = Rent::get()?.minimum_balance(campaign.to_account_info().data_len());
+     if **campaign.to_account_info().lamports.borrow() - rent_balance < amount {
+         return Err(ProgramError::InsufficientFunds);
+     }
+     **campaign.to_account_info().try_borrow_mut_lamports()? -= amount;
+     **user.to_account_info().try_borrow_mut_lamports()? += amount;
+     Ok(())
+ }
+```
+
+This code defines a struct named Withdraw using the #[derive(Accounts)] attribute. The Withdraw struct represents the accounts needed as inputs for a specific program function.
+
+- **`#[derive(Accounts)]`:** This attribute is used to automatically derive the implementation of the `Accounts` trait for the `Withdraw` struct. The `Accounts` trait defines how account information is gathered and passed to an Anchor program function.
+
+- **`pub campaign: Account<'info, Campaign>`:** This field specifies an account named `campaign` of type `Account<'info, Campaign>`. The `mut` attribute indicates that this account will be mutable, meaning it can be modified within the function. 
+
+- **`pub user: Signer<'info>`:** This field represents the `user` account, marked as mutable (mut). The `Signer` trait indicates that this account must be a signer of the transaction, meaning the user must authorize the transaction for it to be valid. 
+
+```
+#[derive(Accounts)]
+pub struct Withdraw<'info> {
+    #[account(mut)]
+    pub campaign: Account<'info, Campaign>,
+    #[account(mut)]
+    pub user: Signer<'info>
+}
+```
+
+At this point, we can Build again to make sure everything is working. Below I provided a full screenshot of the code a the successful build of that code. 
+
+```
+anchor build
+```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/20d7d436-c7c9-41e7-b2f6-6b9f705c3bb8)
+
+## Section 6: Donate Function (last function!)
+
+This function will allow a user to donate to any campaign of their choice. In this function, we are going to transfer funds from a user's account to the campaign's account. **However, the way we transfer funds in this function will be different from the program-derived withdraw function because the program doesn't have authority over the user's wallet.** The user must sign that they want to transfer funds to this campaign. 
+
+- We start things off with a system instruction `ix` which calls `transfer()`. This instruction takes in the user key, campaign key, and amount. 
+- We then call `invoke()` which takes in system instructions, an array of accounts, and the transfer of funds.
+- We end with `Ok(())` to let Solana know our program finished successfully. 
+
+```
+ pub fn donate(ctx: Context<Donate>, amount: u64) -> ProgramResult {
+     let ix = anchor_lang::solana_program::system_instruction::transfer(
+         &ctx.accounts.user.key(),
+         &ctx.accounts.campaign.key(),
+         amount
+     );
+     anchor_lang::solana_program::program::invoke(
+         &ix,
+         &[
+             ctx.accounts.user.to_account_info(),
+             ctx.accounts.campaign.to_account_info()
+         ]
+     );
+     (&mut ctx.accounts.campaign).amount_donated += amount;
+     Ok(())
+ }
+```
+
+The accounts needed are campaign, user, and system program. Very similar to our `Create<...>` account.
+
+```
+#[derive(Accounts)]
+pub struct Donate<'info> {
+    #[account(mut)]
+    pub campaign: Account<'info, Campaign>,
+    #[account(mut)]
+    pub user: Signer<'info>,
+    pub system_program: Program<'info, System>
+}
+```
+
+And let's build again to make sure everything is working.
+
+```
+anchor build
+```
+
+Below is a screenshot to help you troubleshoot. Lines 34-49 and 69-76 are new.
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/e3906105-9b0e-4334-b7f4-fa98df173bed)
