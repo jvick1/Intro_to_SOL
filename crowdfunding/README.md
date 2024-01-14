@@ -257,3 +257,50 @@ anchor build
 Below is a screenshot to help you troubleshoot. Lines 34-49 and 69-76 are new.
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/e3906105-9b0e-4334-b7f4-fa98df173bed)
+
+## Section 7: Deploy our DApp on the Devnet
+
+Navigate to your `anchor.toml` file and change these two lines, save, open a new terminal, and `cd` into crowdfunding:
+
+```
+cluster = "devnet"
+wallet = "./id.json"
+```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/a0982a9b-de81-4d94-91ca-b3f0b06d8263)
+
+After you save and have the new terminal open confirm you are in the crowdfunding project. Once ready let's generate a new wallet which we can use to deploy! If you get stuck at any point there is a screenshot in this section that shows all the terminal commands in this section. Let's start by generating a new key don't worry about passphrase, just press enter the following in your Ubuntu terminal:
+
+```
+solana-keygen new -o id.json
+```
+
+Copy your pubkey and let's airdrop it 2 SOL on devnet. Make sure you use your pubkey! My **Pubkey**: `HNfEtG17j2Hjd7Fjzgv1pMpW7i1EjjdD9iDEfyNZJvw6`. **Please note:** The devnet airdrop is capped at 2 Sol per request. To deploy it is a little over 2.9 SOL so this might take two days to fully deploy. 
+
+```
+solana airdrop 2 HNfEtG17j2Hjd7Fjzgv1pMpW7i1EjjdD9iDEfyNZJvw6 --url devnet
+```
+
+Once we have some SOL we can run: 
+
+```
+anchor build
+``` 
+
+This will generate a **Program ID** mine is `7YvhF9AKe4i7Zuha8NtqEuV2BDUqyGGqWiZvuVKdmYD` to generate yours type:
+
+```
+solana address -k ./target/deploy/crowdfunding-keypair.json
+```
+
+Below is a screenshot of my terminal window.
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/877d8d42-3c4b-463a-a4ae-1fff25c54f38)
+
+Back in your anchor.toml file make sure your program id's match. 
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/6d70608f-fc3c-491f-a9f4-8c82381299b7)
+
+And do the same for your `lib.rs` file:
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/41008a1b-6e6a-43f4-a5a1-57b4179df890)
