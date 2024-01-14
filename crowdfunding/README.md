@@ -59,7 +59,7 @@ Let's remove some of the boilerplate code so we can start our function.
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/c53091f3-e3c2-4f66-a13e-781f94cfa125)
 
-Let's now create our first function which will allow us to create a new campaign. A campaign is something we can do crowdfunding for. Anyone can donate to a campaign and only the owner of the campaign can withdraw funds from that campaign. 
+Let's now create our first function which will allow us to create a new campaign. A campaign in our context refers to something we can do crowdfunding for. Anyone can donate to a campaign and only  the campaign owner possesses the authority to withdraw funds from it. 
 
 ```
 //src/lib.rs
@@ -83,26 +83,25 @@ pub mod crowdfunding {
 }
 ```
 
-Here we made a public `pub` function `fn` named `create()` which can be invoked from our program. In other words, it's a client-callable program function. 
+This public function `create()` is client-callable, allowing external entities to invoke it. Here's a breakdown of its parameters and functionality:
 
-The **first argument** for an anchor program is always the context `ctx` argument which tells the Program what Solana accounts we need to gather data. **If you don't remember what accounts are check out some of the earlier projects in this repo.** TLDR in Solana programs are stateless (can't store data) so if you want to store data on the Solana Blockchain we have to create an account which is like a file and put that account on the Blockchain. Then from our program using code we grab the data from that account. 
+- **First Argument (ctx):** The context argument is essential for gathering data about Solana accounts. As Solana programs are stateless, the context helps in specifying the necessary accounts for data retrieval.
 
-The **second argument** is `name` which is a `String` that tells us the name of the campaign. 
+- **Second Argument (name):** Represents a String indicating the name of the campaign.
 
-The **third parameter** is `description` which is also a `String` but allows the creator to provide more details on the campaign. 
+- **Third Argument (description):** Another String providing additional details on the campaign.
 
-The **result** `-> ProgramResult {}` tells the function what it should return. This helps serve function results and catch errors. Be sure to add `use anchor_lang::solana_program::entrypoint::ProgramResult;` to successfully run this code. 
+- **Result (-> ProgramResult {}):** Specifies the return type of the function, aiding in handling results and errors. Ensure to include `use anchor_lang::solana_program::entrypoint::ProgramResult;` for proper execution.
 
-**Inside the function** we are going to retrieve our **campaign** **accounts** from our **context** `let campaign = &mut ctx.account.campaign;` and we specify `&mut` because we are going to modify this account. We modify it in the next few lines when we set the campaign name & description to user input, initialize the amount donated, and set the admin to the user creating the campaign. Lastly, we use `Ok(())` to let the Solana know that our function has run successfully. 
+Within the function, we retrieve our campaign account from the context using `let campaign = &mut ctx.accounts.campaign;`, indicating that we intend to modify this account. Subsequently, we update the campaign's name and description with user input, initialize the amount donated to zero, and set the admin as the user creating the campaign. Finally, `Ok(())` signals a successful execution of the function to Solana.
 
-## Section 3: Specify the `Context<...>` in our `create(...) function
+## Section 3: Specify the `Context<...>` in our `create(...)` function
 
 Remember Solana Programs can't store data so any data that needs to be stored gets written into an account which is just like a file. The list of these accounts is our `Context<...>` for that function. So, the context of the `create(...)` function is the list of accounts it needs to retrieve data from. **What accounts will be part of the create functions context?**
 
 ```
 
 ```
-
 
 Under our crowdfunding module, we'll create a new structure `struct` called `Create<'info>`. Above it we define a macro used to derive accounts `#[derive(Accounts)]` this `#` indicates that it is a context. 
 
