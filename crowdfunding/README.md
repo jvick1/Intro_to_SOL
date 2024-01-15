@@ -353,6 +353,6 @@ And now we can start coding!
 
 In this, we'll be using our Phantom wallets. If you already have Phantom set up let's head to VScode to our `frontend/src/App.js`. Remove most of the code in there and let's make our App a const. 
 
-![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/52bfc9ea-9027-41f2-8b8c-6c9f2121ba76)
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/e0f3a1aa-3c0f-4c83-8fbf-d106ab2f22e9)
 
 From here we can start with getting the user's Solana Wallet connected to our DApp. Once a wallet is connected to our DApp our website will have permission to run functions from our Solana program on our behalf. If our users don't connect their wallets they simply can't communicate with the Solana Blockchain. 
