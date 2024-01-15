@@ -304,3 +304,26 @@ Back in your anchor.toml file make sure your program id's match.
 And do the same for your `lib.rs` file:
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/41008a1b-6e6a-43f4-a5a1-57b4179df890)
+
+Now let's deploy this app to devnet. This cost me around 2.9 SOL. If you already did you airdrop for today, sometimes you can request 1 SOL and half a SOL and it will still airdrop (sometimes), otherwise you can  send your wallet some SOL from one of the older projects if you have SOL left over there. Once you have the SOL it's time to deploy:
+
+```
+anchor deploy
+```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/4cc955df-0561-4821-bc78-7f2b2921dff3)
+
+Once deployed I can check it on devnet. Here is my Program ID: https://explorer.solana.com/address/7YvhF9AKe4i7Zuha8NtqEuV2BDUqyGGqWiZvuVKdmYD?cluster=devnet. At this point we have finished the backend for our app. Let's build a simple front end to finish this project off!
+
+## Section 8: Front End React App
+
+Make sure you are in the crowdfunding working directory and let's create what will be our front end:
+
+```
+npx create-react-app frontend
+```
+
+Now that we have created our react app let's `cd` into the frontend folder. Here we'll need to add some dependencies.
+
+
+
