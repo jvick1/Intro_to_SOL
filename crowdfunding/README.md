@@ -1,7 +1,5 @@
 # Project #4: GoFundMe Web3 DApp
 
-## Section 0: Overview
-
 The primary objective of this project is to develop a **decentralized application (DApp) for crowdfunding**, akin to platforms like GoFundMe or Kickstarter, on the Solana blockchain. Users will have the ability to initiate crowdfunding campaigns for causes they support, with the entire process facilitated through smart contracts and program logic implemented on the Solana blockchain.
 
 A Solana **program** is essentially a piece of code that executes on the Solana blockchain. However, due to the immutable nature of blockchain, programs cannot directly store data. Instead, they create **accounts** (similar to files) on the blockchain to store relevant data. The program retrieves necessary information from these accounts to execute its functions.
@@ -323,7 +321,38 @@ Make sure you are in the crowdfunding working directory and let's create what wi
 npx create-react-app frontend
 ```
 
-Now that we have created our react app let's `cd` into the frontend folder. Here we'll need to add some dependencies.
+Now that we have created our react app let's `cd` into the frontend folder. 
 
+```
+cd frontend
+```
 
+Here we'll need to add some dependencies:
 
+```
+npm install --save @solana/web3.js
+```
+
+and the anchor library:
+
+```
+npm install --save @project-serum/anchor
+```
+
+Now, let's try running our app.
+
+```
+npm run start
+```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/6750c885-88ae-4a03-9eb9-a0ad415c6ab0)
+
+And now we can start coding!
+
+## Section 9: Connect Wallet
+
+In this, we'll be using our Phantom wallets. If you already have Phantom set up let's head to VScode to our `frontend/src/App.js`. Remove most of the code in there and let's make our App a const. 
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/52bfc9ea-9027-41f2-8b8c-6c9f2121ba76)
+
+From here we can start with getting the user's Solana Wallet connected to our DApp. Once a wallet is connected to our DApp our website will have permission to run functions from our Solana program on our behalf. If our users don't connect their wallets they simply can't communicate with the Solana Blockchain. 
