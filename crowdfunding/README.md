@@ -349,10 +349,18 @@ npm run start
 
 And now we can start coding!
 
-## Section 9: Connect Wallet
+## Section 9: Establishing Wallet Connection
 
-In this, we'll be using our Phantom wallets. If you already have Phantom set up let's head to VScode to our `frontend/src/App.js`. Remove most of the code in there and let's make our App a const. 
+In this section, we'll leverage the Phantom wallet for our interaction. Phantom adds a Solana object to our browser, which we'll utilize to connect our DApp with users' Phantom wallets. If you've already set up Phantom, let's navigate to `frontend/src/App.js` in VScode. Trim down the boilerplate code, and let's define our App as a const. Here, we'll initiate the process of connecting the user's Solana Wallet to our DApp.
 
-![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/e0f3a1aa-3c0f-4c83-8fbf-d106ab2f22e9)
+```
+import './App.css';
 
-From here we can start with getting the user's Solana Wallet connected to our DApp. Once a wallet is connected to our DApp our website will have permission to run functions from our Solana program on our behalf. If our users don't connect their wallets they simply can't communicate with the Solana Blockchain. 
+const App = () => {
+
+}
+
+export default App;
+```
+
+This sets the foundation for integrating wallet connectivity into our DApp. Once a user connects their wallet, our website gains the authorization to execute functions from our Solana program on their behalf. It's important to note that without wallet connection, users won't be able to communicate with the Solana Blockchain through our DApp.
