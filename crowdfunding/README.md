@@ -358,6 +358,8 @@ And now we can start coding!
 In this section, we'll leverage the Phantom wallet for our interaction. Phantom adds a Solana object to our browser, which we'll utilize to connect our DApp with users' Phantom wallets. If you've already set up Phantom, let's navigate to `frontend/src/App.js` in VScode. Trim down the boilerplate code, and let's define our App as a const. Here, we'll initiate the process of connecting the user's Solana Wallet to our DApp.
 
 ```
+//frontend/src/App.js
+
 import './App.css';
 
 const App = () => {
