@@ -256,9 +256,11 @@ Below is a screenshot to help you troubleshoot. Lines 34-49 and 69-76 are new.
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/e3906105-9b0e-4334-b7f4-fa98df173bed)
 
-## Section 7: Deploy our DApp on the Devnet
+## Section 7: Deploying our DApp on the Devnet
 
-Navigate to your `anchor.toml` file and change these two lines, save, open a new terminal, and `cd` into crowdfunding:
+To deploy our DApp on the Devnet, follow these steps:
+
+1. Navigate to your `anchor.toml` file and update the following lines:
 
 ```
 cluster = "devnet"
@@ -267,43 +269,45 @@ wallet = "./id.json"
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/a0982a9b-de81-4d94-91ca-b3f0b06d8263)
 
-After you save and have the new terminal open confirm you are in the crowdfunding project. Once ready let's generate a new wallet which we can use to deploy! If you get stuck at any point there is a screenshot in this section that shows all the terminal commands in this section. Let's start by generating a new key don't worry about passphrase, just press enter the following in your Ubuntu terminal:
+
+2. Save the changes, open a new terminal, and `cd` into the `crowdfunding` project. If not, navigate to it.
+
+3. Generate a new wallet for deployment:
 
 ```
 solana-keygen new -o id.json
 ```
 
-Copy your pubkey and let's airdrop it 2 SOL on devnet. Make sure you use your pubkey! My **Pubkey**: `HNfEtG17j2Hjd7Fjzgv1pMpW7i1EjjdD9iDEfyNZJvw6`. **Please note:** The devnet airdrop is capped at 2 Sol per request. To deploy it is a little over 2.9 SOL so this might take two days to fully deploy. 
+Copy your public key, and let's airdrop 2 SOL on Devnet. Replace YOUR_PUBKEY with your actual public key: My **Pubkey**: `HNfEtG17j2Hjd7Fjzgv1pMpW7i1EjjdD9iDEfyNZJvw6`. 
 
 ```
 solana airdrop 2 HNfEtG17j2Hjd7Fjzgv1pMpW7i1EjjdD9iDEfyNZJvw6 --url devnet
 ```
 
-Once we have some SOL we can run: 
+Please note that the Devnet airdrop is capped at 2 SOL per request. Deploying may take over 2.9 SOL, so it might span two days.
+
+4. Once you have some SOL, run the following to build the project:
 
 ```
 anchor build
 ``` 
 
-This will generate a **Program ID** mine is `7YvhF9AKe4i7Zuha8NtqEuV2BDUqyGGqWiZvuVKdmYD` to generate yours type:
+This generates a Program ID. To find yours, type: My **Program ID**: `7YvhF9AKe4i7Zuha8NtqEuV2BDUqyGGqWiZvuVKdmYD`.
 
 ```
 solana address -k ./target/deploy/crowdfunding-keypair.json
 ```
 
-Below is a screenshot of my terminal window.
-
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/877d8d42-3c4b-463a-a4ae-1fff25c54f38)
 
-Back in your anchor.toml file make sure your program id's match. 
+Update the `anchor.toml` and `lib.rs` files with the respective Program IDs.
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/6d70608f-fc3c-491f-a9f4-8c82381299b7)
 
-And do the same for your `lib.rs` file:
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/41008a1b-6e6a-43f4-a5a1-57b4179df890)
 
-Now let's deploy this app to devnet. This cost me around 2.9 SOL. If you already did you airdrop for today, sometimes you can request 1 SOL and half a SOL and it will still airdrop (sometimes), otherwise you can  send your wallet some SOL from one of the older projects if you have SOL left over there. Once you have the SOL it's time to deploy:
+5. Deploy the app to Devnet:
 
 ```
 anchor deploy
@@ -311,7 +315,7 @@ anchor deploy
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/4cc955df-0561-4821-bc78-7f2b2921dff3)
 
-Once deployed I can check it on devnet. Here is my Program ID: https://explorer.solana.com/address/7YvhF9AKe4i7Zuha8NtqEuV2BDUqyGGqWiZvuVKdmYD?cluster=devnet. At this point we have finished the backend for our app. Let's build a simple front end to finish this project off!
+After deployment, check your Program ID on Devnet. Here's an example Program ID: [7YvhF9AKe4i7Zuha8NtqEuV2BDUqyGGqWiZvuVKdmYD](https://explorer.solana.com/address/7YvhF9AKe4i7Zuha8NtqEuV2BDUqyGGqWiZvuVKdmYD?cluster=devnet). Now, with the backend deployed, let's proceed to build a simple frontend to complete this project.
 
 ## Section 8: Front End React App
 
