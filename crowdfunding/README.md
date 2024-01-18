@@ -355,18 +355,149 @@ And now we can start coding!
 
 ## Section 9: Establishing Wallet Connection
 
+### 1. Intro to Code Structure
 In this section, we'll leverage the Phantom wallet for our interaction. Phantom adds a Solana object to our browser, which we'll utilize to connect our DApp with users' Phantom wallets. If you've already set up Phantom, let's navigate to `frontend/src/App.js` in VScode. Trim down the boilerplate code, and let's define our App as a const. Here, we'll initiate the process of connecting the user's Solana Wallet to our DApp.
+
+This sets the foundation for integrating wallet connectivity into our DApp. Once a user connects their wallet, our website gains the authorization to execute functions from our Solana program on their behalf. It's important to note that without wallet connection, users won't be able to communicate with the Solana Blockchain through our DApp. To check if the wallet is connected let's make an async await function that checks if the Solana object is in the window and if that wallet is connected to our app. 
 
 ```
 //frontend/src/App.js
 
 import './App.css';
+import {useEffect} from "react";
 
 const App = () => {
+  const checkIfWalletIsConnected = async () => {
+    try{
+      const {solana} = window;
+      if (solana) {
+        if (solana.isPhantom) {
+          console.log("Phantom wallet found!");
+        }
+      } else {
+        alert("Solana object not found! Get a Phantom wallet");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-}
+  useEffect(() => {
+    const onLoad = async() => {
+      await checkIfWalletIsConnected();
+    }
+    window.addEventListener("load", onLoad);
+    return () => window.removeEventListener("load", onLoad);
+  }, []);
+};
 
 export default App;
 ```
 
-This sets the foundation for integrating wallet connectivity into our DApp. Once a user connects their wallet, our website gains the authorization to execute functions from our Solana program on their behalf. It's important to note that without wallet connection, users won't be able to communicate with the Solana Blockchain through our DApp.
+This code snippet employs an asynchronous `useEffect` hook to initiate the wallet connection check when the component loads. It ensures that our users have a seamless experience connecting their Phantom wallets to our DApp. For me, the try-catch was easy to understand but the `useEffect` was a little new. Here is a detailed breakdown of `useEffect`:
+
+- `const onLoad = async () => { await checkIfWalletIsConnected(); };`: Defines an onLoad function that, when called, invokes the `checkIfWalletIsConnected` function.
+
+- `window.addEventListener("load", onLoad);`: Attaches the `onLoad` function to the `load` event of the window. This ensures that the wallet connection check is performed when the component loads.
+
+- `return () => window.removeEventListener("load", onLoad);`: Removes the event listener when the component unmounts. This cleanup is essential to prevent memory leaks.
+
+- `}, []);`: The empty dependency array ensures that the useEffect hook runs only once when the component mounts. This is suitable for tasks like initializing and checking the wallet connection.
+
+### 2. Testing if Solana Object is Found
+
+Let's test this now. Refresh your browser hit f12 or right-click and inspect. If you closed your DApp go back to Ubuntu `cd` into crowdfunding, `cd` into frontend, and run `npm run start`. At this point check the console logs and you should see something like this:
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/362e05e6-18f8-48bb-b3a5-438917a427c0)
+
+Nice! 
+
+### 3. Wallet Authorization 
+
+Next, we need to check if we are authorized to view the user's wallet. Once we have access we'll then get access to the functions on our Solana Program. To add this logic we'll add a few lines of code to the `if (solana.isPhantom)` section of our code just below `console.log("Phantom wallet found!");`. Here we'll add logic to connect to the wallet if trusted and then console log the wallet's public key:
+
+```
+ const response = await solana.connect({
+   onlyIfTrusted: true,
+ });
+ console.log(
+   "Connected with public key:",
+   response.publicKey.toString()
+ );
+```
+
+Below I have an image of the code and the new result we get in the console. **If you got an error here that is to be expected. We haven't authorized the connection yet.**
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/35df36fc-74b5-4d5c-975d-2fa72b4214fc)
+
+### 4. Connect Wallet Logic  
+
+In this section, we'll implement the logic to connect a user's wallet to our DApp. We'll create a connect wallet button with conditional rendering to manage the different states of our app. The goal is to display the "Connect to Wallet" button if the user is not connected and render the DApp once connected.
+
+First, we define an asynchronous `connectWallet` function and render a button triggering this function. The button is displayed only if the user is not connected. To track the connection state, we use the `useState` hook, initializing `walletAddress` to `null`. This variable stores the user's wallet address once connected.
+
+We then update the `checkIfWalletIsConnected` function to store the wallet address upon connection. The return statement in the `App` component is modified to render the app container only if no wallet address is found.
+
+```
+//frontend/src/App.js
+
+import './App.css';
+import {useEffect, useState} from "react";
+
+const App = () => {
+  const [walletAddress, setWalletAddress] = useState(null);
+  const checkIfWalletIsConnected = async () => {
+    try{
+      const {solana} = window;
+      if (solana) {
+        if (solana.isPhantom) {
+          console.log("Phantom wallet found!");
+          const response = await solana.connect({
+            onlyIfTrusted: true,
+          });
+          console.log(
+            "Connected with public key:",
+            response.publicKey.toString()
+          );
+          setWalletAddress(response.publicKey.toString());
+        }
+      } else {
+        alert("Solana object not found! Get a Phantom wallet");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const connectWallet = async () => {
+    const {solana} = window;
+    if (solana) {
+      const response = await solana.connect();
+      console.log('Connected with public key:', response.publicKey.toString());
+      setWalletAddress(response.publicKey.toString());
+    }
+  };
+
+  const renderNotConnectedContainer = () => (
+    <button onClick={connectWallet}>Connect to Wallet</button>
+  );
+  useEffect(() => {
+    const onLoad = async() => {
+      await checkIfWalletIsConnected();
+    }
+    window.addEventListener("load", onLoad);
+    return () => window.removeEventListener("load", onLoad);
+  }, []);
+
+  return (<div className="App">{!walletAddress && renderNotConnectedContainer()}</div>);
+};
+
+export default App;
+```
+
+Once connected and approved you may need to refresh but you should get a console log like this:
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/c14654bb-107c-4b8f-9572-bfd4a825f3bc)
+
+To test more go into phantom > settings > connected Apps > click app > disconnect. This will remove that app as a trusted app and allow you to reconnect with the button once page is refreshed.
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/b997a688-4d60-4e5d-9a94-74c26ffc9305)
