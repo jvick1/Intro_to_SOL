@@ -501,3 +501,5 @@ Once connected and approved you may need to refresh but you should get a console
 To test more go into phantom > settings > connected Apps > click app > disconnect. This will remove that app as a trusted app and allow you to reconnect with the button once page is refreshed.
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/b997a688-4d60-4e5d-9a94-74c26ffc9305)
+
+## Section 10: Create a Campaign
