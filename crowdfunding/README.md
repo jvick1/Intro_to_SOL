@@ -545,11 +545,24 @@ const opts = {
 ```
 
 Below is a screenshot of my code in case you get stuck! The new lines added in this section are 18-22 `getProvider` and the `variables` in lines 9-14.
+
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/28b44de1-1b78-4b29-a03d-54547d349613)
 
 ### 3. Create Campaign Function 
 
+Here is the layout of our function:
 
+1. `const provider = getProvider();`: Fetches the provider from the Phantom wallet
+
+2. `const program = new Program(idl, programID, provider);`: Creates a new instance of the Program class using the provided IDL, program ID, and the obtained provider.
+
+3. `const [campaign] = PublicKey.findProgramAddressSync([...], program.programId);`: Generates a unique public key for the campaign account using the `findProgramAddressSync` method. The campaign account's uniqueness is based on the specified seeds, including the user's wallet public key.
+
+4. `await program.methods.create(...);`: Invokes the `create` method of the Solana program, passing in the required parameters. This method triggers the creation of a new campaign with the provided name, description, and account details. Note we can take user input here w/ something simple like `let campName = prompt("Please Enter Campain Name:");` then feed `campName` in for the hard-coded text.
+
+5. `console.log('Created a new campaign w/ account:', campaign.toString());`: Logs a success message, indicating that a new campaign account has been successfully created.
+
+6. `catch(error) { console.error('Error creating campaign account:', error); }`: Handles any errors that might occur during the process, logging an error message if an exception is caught.
 
 ```
 const createCampaign = async () => {
@@ -576,7 +589,7 @@ const createCampaign = async () => {
  };
 ```
 
-Now we need a way to call this function. Let's add a new button!
+Now we need a way to call this function. Let's add a new button! We'll create a new container that appears once we have already connected our wallet. And we'll add a state for this in our return.
 
 ```
 const renderConnectedContainer = () => (
@@ -597,9 +610,9 @@ This should be what your code looks like now:
 If you are getting an error like this do the following:
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/c83e8e74-beee-4900-b724-33733d4526a7)
 
-cd crowdfunding, cd frontend, npm install --save assert 
+cd crowdfunding, cd frontend, `npm install --save assert`. **BE SURE TO DELETE YOUR CONNECTION AFTER CHANGING THE UNDERLYING CODE.**
 
-After troubleshooting for like 30 min I finally got it to work. **BE SURE TO DELETE YOUR CONNECTION AFTER CHANGING THE UNDERLYING CODE.**
+After troubleshooting for like 30 min I finally got it to work. 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/9f0a5d16-4024-4470-a85b-8d40e82eafaf)
 
 ## Section 11: Display all campaigns 
