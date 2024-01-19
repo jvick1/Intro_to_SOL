@@ -503,3 +503,103 @@ To test more go into phantom > settings > connected Apps > click app > disconnec
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/b997a688-4d60-4e5d-9a94-74c26ffc9305)
 
 ## Section 10: Create a Campaign
+
+Now that users can log in, let's empower them to create a campaign. The initial requirement is the `idl` file, generated during the `anchor build` command, located at `target/idl/crowdfunding.json`. This JSON file contains crucial information about our Solana program, such as function names and parameters, enabling seamless interaction between our web app and program. At the bottom, it holds the program ID, crucial for program interaction.
+
+### 1. Setup
+
+1. Copy the entire content of `target/idl/crowdfunding.json`.
+2. Create a new file in `frontend/src/` named `idl.json`.
+3. Paste the copied contents into `idl.json`.
+4. In your `frontend/src/App.js`, import the following:
+
+```
+//frontend/src/App.js
+import idl from './idl.json'
+import {Connection, PublicKey, clusterApiUrl} from '@solana/web3.js'
+import {Program, AnchorProvider, web3, utils, BN} from '@project-serum/anchor'
+import {Buffer} from 'buffer';
+window.Buffer = Buffer;
+```
+
+### 2. Get Provider
+
+Now, let's create a provider—an authenticated connection to Solana. A wallet is essential for this connection, and we use `window.solana`. Keep in mind that any interaction with Solana, even data retrieval, requires a connected wallet. Phantom simplifies this process, offering users a secure and straightforward way to connect to Solana. We are going to be adding some lines of code to the `const App` right below `const [walletAddress, setWalletAddress] = useState(null);`:
+
+```
+const getProvider = () => {
+  const connection = new Connection(network, opts.preflightCommitment);
+  const provider = new AnchorProvider(connection, window.solana, opts.preflightCommitment);
+  return provider
+};
+```
+
+Now, let's initialize some missing variables. Just above our `const App` component, we'll obtain the program ID, set our network to Devnet, and define options to pick when a transaction is confirmed. For instance, we are currently waiting for the node to confirm it, but we can opt to wait for the entire blockchain confirmation with `finalized`.
+
+```
+const programID = new PublicKey(idl.metadata.address);
+const network = clusterApiUrl("devnet");
+const opts = {
+  preflightCommitment: "processed",
+};
+```
+
+Below is a screenshot of my code in case you get stuck! The new lines added in this section are 18-22 `getProvider` and the `variables` in lines 9-14.
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/28b44de1-1b78-4b29-a03d-54547d349613)
+
+### 3. Create Campaign Function 
+
+
+
+```
+const createCampaign = async () => {
+   try{
+     const provider = getProvider()
+     const program = new Program(idl, programID, provider)
+     const [campaign] = PublicKey.findProgramAddressSync([
+       utils.bytes.utf8.encode("CAMPAIGN_DEMO"),
+       provider.wallet.publicKey.toBuffer(),
+     ],
+     program.programId
+     );
+     await program.methods.create('campaign name', 'campaign description', {
+       accounts: {
+         campaign,
+         user: provider.wallet.publicKey,
+         systemProgram: SystemProgram.programId,
+       },
+     });
+     console.log('Created a new campaign w/ account:', campaign.toString());
+   } catch(error) {
+     console.error('Error creating campaign account:', error);
+   }
+ };
+```
+
+Now we need a way to call this function. Let's add a new button!
+
+```
+const renderConnectedContainer = () => (
+  <button onClick={createCampaign}>Create a Campaign...</button>
+);
+
+//...
+
+return (<div className="App">
+  {!walletAddress && renderNotConnectedContainer()}
+  {walletAddress && renderConnectedContainer()}
+  </div>);
+```
+
+This should be what your code looks like now:
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/7708d691-b71b-47fa-b191-e73162da1412)
+
+If you are getting an error like this do the following:
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/c83e8e74-beee-4900-b724-33733d4526a7)
+
+cd crowdfunding, cd frontend, npm install --save assert 
+
+After troubleshooting for like 30 min I finally got it to work. **BE SURE TO DELETE YOUR CONNECTION AFTER CHANGING THE UNDERLYING CODE.**
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/9f0a5d16-4024-4470-a85b-8d40e82eafaf)
+
+## Section 11: Display all campaigns 
