@@ -745,5 +745,6 @@ Now there are some limitations here.
 - Wouldn't it be cool if Campaign ID linked out to Solscan
 
 The code in this repo will help you create the following end product:
+I added some additional functionality, more console logs, and addressed some of the limitations mentioned above. 
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/3afa9d21-0e88-423f-b4af-d60f3d49e9d6)
