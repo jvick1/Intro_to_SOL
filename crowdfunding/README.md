@@ -617,3 +617,126 @@ After troubleshooting for like 30 min I finally got it to work.
 
 
 ## Section 11: Display all campaigns 
+
+Now that we've successfully created a campaign, the next step is to display it in our web app. We'll integrate the logic for fetching campaigns (`getCampaigns`) under the `connectWallet` function to ensure that campaigns are retrieved and ready for display.
+
+```
+const getCampaigns = async() => {
+  const connection = new Connection(network, opts.preflightCommitment);
+  const provider = getProvider();
+  const program = new Program(idl, programID, provider);
+  Promise.all(
+    (await connection.getProgramAccounts(programID)).map(
+      async (campaign) => ({
+        ...(await program.account.campaign.fetch(campaign.pubkey)),
+        pubkey: campaign.pubkey,
+      })
+    )
+  ).then((campaigns) => setCampaigns(campaigns));
+};
+```
+
+1. **Connection Setup:** Here, a new Solana blockchain connection is established using the specified network (devnet) and preflight commitment option. The `connection` object is crucial for interacting with the Solana blockchain.
+2. **Provider and Program Initialization:** The `getProvider()` function provides a Solana wallet provider, which is essential for making transactions. A new instance of the Anchor `Program` class is created. This class represents the Solana program we're interacting with, and it requires the program's ID (`programID`), the program's interface description language (`idl`), and the wallet provider.
+3. **Fetching Campaign Accounts:** `connection.getProgramAccounts(programID)` retrieves all accounts associated with the specified program ID on the Solana blockchain. The `map` function is used to iterate over each fetched campaign account. For each campaign account, it fetches additional data using `program.account.campaign.fetch(campaign.pubkey)`. The spread operator (`...`) is used to merge this additional data with the existing properties of the campaign account. The result is an array of objects representing campaign accounts, each containing the fetched data and the public key (`pubkey`) of the campaign account.
+4. **Updating State with Campaigns:** The `Promise.all` resolves with an array of campaign objects. The `setCampaigns` function  is called to update the component's state with the fetched campaigns.
+
+This function fetches campaign accounts from the Solana blockchain, processes the data using the Anchor program, and updates the component's state with the retrieved campaigns.
+
+Now we need to add a stateful variable at the top for campaigns, similar to what we did for `walletAddress`. So, at the top of your code where we declare our `App()` and then our `walletAddress` let's also add the following:
+
+```
+const [campaigns, setCampaigns] = useState([]);
+```
+
+And lastly, let's update our `renderConnectedContainer` to include the map of campaigns. 
+
+```
+const renderConnectedContainer = () => (
+  <>
+    <button onClick={createCampaign}>Create a Campaign...</button>
+    <button onClick={getCampaigns}>Get a list of campaigns...</button>
+    <br />
+    {campaigns.map(campaign => (<>
+      <p>Campaign ID: {campaign.pubkey.toString()}</p>
+      <p>Balance: {(campaign.amountDonated / web3.LAMPORTS_PER_SOL).toString()}</p>
+      <p>{campaign.name}</p>
+      <p>{campaign.description}</p>
+
+      <br />
+      </>
+    ))}
+  </>
+);
+```
+
+## Section 12: Donate to Campaign 
+
+Let's now write the donate function. When you call the list of campaigns we'll add a donate button which on click will donate 0.2 SOL and we'll recall the `getCampaings()` function to refresh the balance. I put this section of code after my `createCampaing()`
+
+```
+const donate = async (publicKey) => {
+   try {
+     const provider = getProvider();
+     const program = new Program(idl, programID, provider);
+
+     await program.rpc.donate(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
+       accounts: {
+         campaign: publicKey,
+         user: provider.wallet.publicKey,
+         systemProgram: SystemProgram.programId,
+       },
+     });
+     console.log('Donated some money to:', publicKey.toString())
+     getCampaigns();
+   } catch(error) {
+     console.error('Error donating:', error);
+   }
+ };
+```
+
+Next to the `renderConnectedContainer` function let's add the button. For me, I added this button under the description. 
+
+```
+ <button onClick = {() => donate(campaign.pubkey)}>
+   Click to donate
+ </button>
+```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/70f74052-3503-40ef-a2c2-b9c67689eaed)
+
+## Section 13: Withdraw (the final section of this project!)
+
+This is super easy and will almost be an exact copy of the `donate()` function. The key difference here is we'll call the `withdraw` method and we don't need `systemProgram` because it is only needed when sending funds from a user's wallet. 
+
+```
+const withdraw = async (publicKey) => {
+   try {
+     const provider = getProvider();
+     const program = new Program(idl, programID, provider);
+
+     await program.rpc.withdraw(new BN(0.2 * web3.LAMPORTS_PER_SOL), {
+       accounts: {
+         campaign: publicKey,
+         user: provider.wallet.publicKey,
+       },
+     });
+     console.log("Withdrew some money from:", publicKey.toString())
+   }catch(error){
+     console.error('Error withdrawing:', error);
+   }
+ };
+```
+
+And to be able to call this let's update our `renderConnectedContainer` again. I am just copy pasting the donate button and changing it to withdraw. 
+
+```
+ <button onClick = {() => withdraw(campaign.pubkey)}>
+   Click to withdraw
+ </button>
+```
+
+Now there are some limitations here. 
+- A user can only make one campaign. How could they make more? Hint you'd need to change the Solana Program.
+- Name and description are hard-coded 
+- donate and withdraw are hard-coded
