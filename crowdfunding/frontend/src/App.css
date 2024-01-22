@@ -1,0 +1,109 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* added this to make it cool */
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(to right, #B21CD6, #02B1E1);
+  color: #343a40;
+  margin: 0;
+  padding: 0;
+}
+
+.campaign-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.campaign-card {
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px; /* Adjust spacing between cards */
+  padding: 20px;
+  max-width: 700px; /* Set a maximum width for the cards */
+  width: 100%; /* Make cards responsive within their container */
+  overflow-wrap: break-word;
+}
+
+.campaign-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  border: 3px solid #00D885;
+  transform: translateY(-4px) scale(1.02);
+  background-color: #fff;
+}
+
+.card-buttons {
+  margin-top: 10px;
+}
+
+button {
+  background-color: #00D885;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
+}
+
+button:hover {
+  background-color: #3467eb;
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+h1 {
+  color: #fff; 
+}
+
+h3 {
+  color: #3467eb; 
+}
+
+h4 {
+  color: #343a40;
+}
