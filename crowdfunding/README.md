@@ -743,3 +743,7 @@ Now there are some limitations here.
 - Name and description are hard-coded 
 - donate and withdraw are hard-coded
 - Wouldn't it be cool if Campaign ID linked out to Solscan
+
+The code in this repo will help you create the following end product:
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/3afa9d21-0e88-423f-b4af-d60f3d49e9d6)
