@@ -740,3 +740,4 @@ Now there are some limitations here.
 - A user can only make one campaign. How could they make more? Hint you'd need to change the Solana Program.
 - Name and description are hard-coded 
 - donate and withdraw are hard-coded
+- Wouldn't it be cool if Campaign ID linked out to solscan
