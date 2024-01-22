@@ -558,7 +558,7 @@ Here is the layout of our function:
 
 3. `const [campaign] = PublicKey.findProgramAddressSync([...], program.programId);`: Generates a unique public key for the campaign account using the `findProgramAddressSync` method. The campaign account's uniqueness is based on the specified seeds, including the user's wallet public key.
 
-4. `await program.methods.create(...);`: Invokes the `create` method of the Solana program, passing in the required parameters. This method triggers the creation of a new campaign with the provided name, description, and account details. Note we can take user input here w/ something simple like `let campName = prompt("Please Enter Campain Name:");` then feed `campName` in for the hard-coded text.
+4. `await program.rpc.create(...);`: Invokes the `create` method of the Solana program, passing in the required parameters. This method triggers the creation of a new campaign with the provided name, description, and account details. Note we can take user input here w/ something simple like `let campName = prompt("Please Enter Campain Name:");` then feed `campName` in for the hard-coded text.
 
 5. `console.log('Created a new campaign w/ account:', campaign.toString());`: Logs a success message, indicating that a new campaign account has been successfully created.
 
@@ -575,7 +575,7 @@ const createCampaign = async () => {
      ],
      program.programId
      );
-     await program.methods.create('campaign name', 'campaign description', {
+     await program.rpc.create('campaign name', 'campaign description', {
        accounts: {
          campaign,
          user: provider.wallet.publicKey,
@@ -610,9 +610,10 @@ This should be what your code looks like now:
 If you are getting an error like this do the following:
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/c83e8e74-beee-4900-b724-33733d4526a7)
 
-cd crowdfunding, cd frontend, `npm install --save assert`. **BE SURE TO DELETE YOUR CONNECTION AFTER CHANGING THE UNDERLYING CODE.**
+cd crowdfunding, cd frontend, `npm install --save assert`. I also had to add `npm install node-polyfill-webpack-plugin --save-dev`. **BE SURE TO DELETE YOUR CONNECTION AFTER CHANGING THE UNDERLYING CODE.**
 
 After troubleshooting for like 30 min I finally got it to work. 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/9f0a5d16-4024-4470-a85b-8d40e82eafaf)
+
 
 ## Section 11: Display all campaigns 
