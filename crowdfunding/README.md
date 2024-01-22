@@ -604,7 +604,7 @@ return (<div className="App">
   </div>);
 ```
 
-This should be what your code looks like now:
+This should be what your code looks like now, please note that line 64 has been updated from methods to rpc. Methods worked for this step but rpc fixed an error I got next section. So stick with RPC that one is better.
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/7708d691-b71b-47fa-b191-e73162da1412)
 
 If you are getting an error like this do the following:
