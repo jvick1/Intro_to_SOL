@@ -35,7 +35,7 @@ Now let's build.
 What this `build` does is populate the `target` folder with `target/idl/crowdfunding.json`. This is the interface description language (idl) which describes the instructions from our Solana program. This is useful for test and front-end integration. Sometimes the build may fail like it did for me... if you are lucky and it finished first try move on to section 2. 
 
 ### Failed
-I had an error on my first run. An error is different than a warning. To fix this error I added `ahash = "=0.8.6"` to the `Cargo.toml` file to fix the error. If you have an error fix it before moving on to creating your first function.
+I had an error on my first run. An error is different than a warning. To fix this error I added `ahash = "=0.8.6"` to the `Cargo.toml` file to fix the error. If you have an error fix it before moving on to creating your first function. I also had to be on Solana v 1.17.13.
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/d1427240-d6b7-45bf-ac85-05ffefb9f5bc)
 
