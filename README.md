@@ -4,6 +4,7 @@
 3. new-token
 4. sol-program (calc)
 5. crowdfunding
+6. staking
 
 ## Setting up Solana on a Windows machine.
 
