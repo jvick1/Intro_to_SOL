@@ -71,3 +71,37 @@ const runMain = async() => {
 
 runMain();
 ```
+
+Now we'll import the `Connection` class and the `clusterApiUrl` function from `solana/web3.js`. Within our main function, we'll establish a new connection to `devnet` using `clusterApiUrl` and the second parameter specifies the commitment level. In our case, we'll use `processed` which indicates the client wants to wait for a transaction to be included in a block that has been processed by the network. We'll then pull a list of `current` and `delinquent` validators (or voting accounts). Then we'll `console.log()` our results:
+
+```
+const { Connection, clusterApiUrl } = require("@solana/web3.js");
+
+const main = async() => {
+    const connection = new Connection(clusterApiUrl('devnet'), 'processed');
+    const {current, delinquent} = await connection.getVoteAccounts();
+    console.log('all validators: ' + current.concat(delinquent).length);
+    console.log('current validators: ' + current.length);
+};
+
+const runMain = async() => {
+    try {
+        await main();
+    } catch(error){
+        console.error(error);
+    }
+};
+
+runMain();
+```
+
+Once these updates are made head back to your terminal and run the following:
+
+```
+node get_validators.js
+```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/c40af246-3e82-4eb4-93c5-24ef9411a467)
+
+
+
