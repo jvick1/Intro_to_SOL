@@ -87,6 +87,54 @@ node get_validators.js
 
 A Solana stake account is a mechanism for users to contribute to the network's security and decentralization by locking up SOL tokens. By staking SOL in this account, users support the proof-of-stake consensus and earn rewards distributed by validators. This process not only enhances the network's robustness but also offers stakers a passive income through additional SOL token rewards.
 
+Make a new js file `create_stake_account.js` and add the following code. Note the structure.
+
+```
+const { Connection, clusterApiUrl } = require("@solana/web3.js");
+
+const main = async() => {
+    const connection = new Connection(clusterApiUrl('devnet'), 'processed');
+    //our stake account code will go here...
+};
+
+const runMain = async() => {
+    try {
+        await main();
+    } catch(error){
+        console.error(error);
+    }
+};
+
+runMain();
+```
+
+We'll imagine we have a user who wants to stake some of his SOL. That user needs a wallet and some SOL. So, we'll create a `wallet` and `airdrop` some SOL. To generate the wallet add `Keypair`. Request an airdrop, wait for a confirmation, and then return the balance. Recall there is a rate limit of ~2 SOL every 24hrs.  
+
+```
+const { Connection, clusterApiUrl, LAMPORTS_PER_SOL, Keypair } = require("@solana/web3.js");
+
+const main = async() => {
+    const connection = new Connection(clusterApiUrl('devnet'), 'processed');
+    const wallet = Keypair.generate();
+    const airdropSignature = await connection.requestAirdrop(
+        wallet.publicKey, 
+        1 * LAMPORTS_PER_SOL
+    );
+    await connection.confirmTransaction(airdropSignature);
+    const balance = await connection.getBalance(wallet.publicKey);
+    console.log('Balance:' + balance);
+};
+
+const runMain = async() => {
+    try {
+        await main();
+    } catch(error){
+        console.error(error);
+    }
+};
+
+runMain();
+```
 
 
 ## Section 4: Delegate Your Stake
