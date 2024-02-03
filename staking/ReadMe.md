@@ -136,6 +136,11 @@ const runMain = async() => {
 runMain();
 ```
 
+Let's test this code before actually making the stake account. You should see the wallet balance printed out in the terminal something like 10000000ish  Lamports (or however much you airdropped). 
+
+```
+node create_state_account.js
+```
 
 ## Section 4: Delegate Your Stake
 
