@@ -29,27 +29,6 @@ Now we can also install the solana/web3.js library.
 
 ## Section 2: View Validators
 
-Now let's open our `package.json` in VScode and make the following change `"type": "module",`.
-
-```
-{
-  "name": "staking",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@solana/web3.js": "^1.89.1"
-  }
-}
-```
-
 Create a new file named `get_validators.js` and in this file, we are going to write some code that will allow us to get a list of validators. 
 
 Solana validators serve as critical nodes in the blockchain's decentralized network, validating transactions and securing the system through a Proof-of-Stake (PoS) consensus mechanism. They play a key role in maintaining the integrity and efficiency of the Solana blockchain, contributing to its decentralized structure and providing opportunities for token holders to participate and earn rewards.
@@ -72,7 +51,7 @@ const runMain = async() => {
 runMain();
 ```
 
-Now we'll import the `Connection` class and the `clusterApiUrl` function from `solana/web3.js`. Within our main function, we'll establish a new connection to `devnet` using `clusterApiUrl` and the second parameter specifies the commitment level. In our case, we'll use `processed` which indicates the client wants to wait for a transaction to be included in a block that has been processed by the network. We'll then pull a list of `current` and `delinquent` validators (or voting accounts). Then we'll `console.log()` our results:
+Now we'll import the `Connection` class and the `clusterApiUrl` function from `solana/web3.js`. Within our main function, we'll establish a new connection to `devnet` using `clusterApiUrl` and the second parameter specifies the commitment level. In our case, we'll use `processed` which indicates the client wants to wait for a transaction to be included in a block that has been processed by the network. We'll then pull a list of `current` and `delinquent` validators (or voting accounts). Then we'll `console.log()` our results. We'll also print out an example validator with `current[0]`:
 
 ```
 const { Connection, clusterApiUrl } = require("@solana/web3.js");
@@ -82,6 +61,7 @@ const main = async() => {
     const {current, delinquent} = await connection.getVoteAccounts();
     console.log('all validators: ' + current.concat(delinquent).length);
     console.log('current validators: ' + current.length);
+    console.log(current[0]);
 };
 
 const runMain = async() => {
@@ -101,7 +81,35 @@ Once these updates are made head back to your terminal and run the following:
 node get_validators.js
 ```
 
-![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/c40af246-3e82-4eb4-93c5-24ef9411a467)
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/f67e23d3-b963-4616-a775-70a04616402d)
 
+## Section 3: Stake Account
 
+## Section 4: Delegate Your Stake
 
+## Section 5: Check Delegators 
+
+## Section 6: Deactivate
+
+## Section 7: Withdraw
+
+Now let's open our `package.json` in VScode and make the following change `"type": "module",`.
+
+```
+{
+  "name": "staking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@solana/web3.js": "^1.89.1"
+  }
+}
+```
