@@ -142,6 +142,58 @@ Let's test this code before actually making the stake account. You should see th
 node create_state_account.js
 ```
 
+Now that we have some funds in the wallet we can set up the staked account.  It generates a new keypair for the stake account, calculates the minimum required rent, specifies the amount to stake, and creates a stake account transaction. The transaction is then sent and confirmed on the Solana network. The code prints the transaction ID, the stake account's balance in SOL, and its activation status. This process allows users to stake SOL tokens, contributing to network security and earning rewards while monitoring the account's status. Note: the addition of StakeProgram in the required packages. 
+
+```
+const { Connection, clusterApiUrl, LAMPORTS_PER_SOL, Keypair, Authorized, Lockup, sendAndConfirmRawTransaction, StakeProgram } = require("@solana/web3.js");
+
+const main = async() => {
+    const connection = new Connection(clusterApiUrl('devnet'), 'processed');
+    const wallet = Keypair.generate();
+
+    const airdropSignature = await connection.requestAirdrop(
+        wallet.publicKey, 
+        1 * LAMPORTS_PER_SOL
+    );
+    await connection.confirmTransaction(airdropSignature);
+
+    const balance = await connection.getBalance(wallet.publicKey);
+    console.log('Balance:' + balance);
+
+    const stakeAccount = Keypair.generate();
+    const minimumRent = await connection.getMinimumBalanceForRentExemption(StakeProgram.space);
+    const ammountUserWantsToStake = 0.5 * LAMPORTS_PER_SOL;
+    const ammountToStake = minimumRent + ammountUserWantsToStake;
+
+    const createStakeAccountTx = StakeProgram.createAccount({
+        authorized: new Authorized(wallet.publicKey, wallet.publicKey),
+        fromPubkey: wallet.publicKey,
+        lamports: ammountToStake,
+        lockup: new Lockup(0,0, wallet.publicKey),
+        stakePubkey: stakeAccount.publicKey
+    });
+    
+    const createStakeAccountTxId = await sendAndConfirmRawTransaction(connection, createStakeAccountTx, [wallet, stakeAccount]);
+
+    console.log(`stake account creted. Tx Id: ${createStakeAccountTxId}`);
+    let stakeBalance = await connection.getBalance(stakeAccount.publicKey);
+    console.log(`Stake account balance: ${stakeBalance / LAMPORTS_PER_SOL} SOL`);
+
+    let stakeStatus = await connection.getStakeActivation(stakeAccount.publicKey);
+    console.log(`Stake account status: ${stakeStatus.state}`);
+};
+
+const runMain = async() => {
+    try {
+        await main();
+    } catch(error){
+        console.error(error);
+    }
+};
+
+runMain();
+```
+
 ## Section 4: Delegate Your Stake
 
 ## Section 5: Check Delegators 
