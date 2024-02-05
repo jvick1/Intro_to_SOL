@@ -196,6 +196,8 @@ runMain();
 
 ## Section 4: Delegate Your Stake
 
+At this point let's create a new file named `delegate_stake.js` and copy-paste all of our contents from `create_stake_account.js`. 
+
 ## Section 5: Check Delegators 
 
 ## Section 6: Deactivate
