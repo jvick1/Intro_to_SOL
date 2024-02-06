@@ -145,7 +145,7 @@ node create_stake_account.js
 Now that we have some funds in the wallet we can set up the staked account.  It generates a new keypair for the stake account, calculates the minimum required rent, specifies the amount to stake, and creates a stake account transaction. The transaction is then sent and confirmed on the Solana network. The code prints the transaction ID, the stake account's balance in SOL, and its activation status. This process allows users to stake SOL tokens, contributing to network security and earning rewards while monitoring the account's status. Note: the addition of StakeProgram in the required packages. 
 
 ```
-const { Connection, clusterApiUrl, LAMPORTS_PER_SOL, Keypair, Authorized, Lockup, sendAndConfirmRawTransaction, StakeProgram } = require("@solana/web3.js");
+const { Connection, clusterApiUrl, LAMPORTS_PER_SOL, Keypair, Authorized, Lockup, sendAndConfirmTransaction, StakeProgram } = require("@solana/web3.js");
 
 const main = async() => {
     const connection = new Connection(clusterApiUrl('devnet'), 'processed');
@@ -173,7 +173,7 @@ const main = async() => {
         stakePubkey: stakeAccount.publicKey
     });
     
-    const createStakeAccountTxId = await sendAndConfirmRawTransaction(connection, createStakeAccountTx, [wallet, stakeAccount]);
+    const createStakeAccountTxId = await sendAndConfirmTransaction(connection, createStakeAccountTx, [wallet, stakeAccount]);
 
     console.log(`stake account creted. Tx Id: ${createStakeAccountTxId}`);
     let stakeBalance = await connection.getBalance(stakeAccount.publicKey);
