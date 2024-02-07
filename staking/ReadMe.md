@@ -194,6 +194,10 @@ const runMain = async() => {
 runMain();
 ```
 
+When you run this code the end result should be something like this:
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/79c71d4f-15fc-41b1-b339-2bac341237c6)
+
 ## Section 4: Delegate Your Stake
 
 At this point let's create a new file named `delegate_stake.js` and copy-paste all of our contents from `create_stake_account.js`. 
