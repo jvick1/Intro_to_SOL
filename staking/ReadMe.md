@@ -1,5 +1,7 @@
 # Stake your $SOL with JavaScript
 
+I have uploaded each code snippet as a separate file. Please start by running the first section named "intro" because you need the solana/web3.js library to execute any of the JavaScript projects in this repository. Following this guide will lead you through developing each file to a specific "checkpoint" and then building upon it in the subsequent sections.
+
 ## Section 1: Intro
 Enter a new Umbuntu terminal and navigate to a folder of your choice.
 
