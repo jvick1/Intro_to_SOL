@@ -202,7 +202,78 @@ When you run this code the end result should be something like this:
 
 ## Section 4: Delegate Your Stake
 
-At this point let's create a new file named `delegate_stake.js` and copy-paste all of our contents from `create_stake_account.js`. 
+Now let's create a new file named `delegate_stake.js` and copy-paste all of our contents from `create_stake_account.js`. 
+
+In this section, we will retrieve the list of validators from the Solana blockchain using the `getVoteAccounts` method. 
+For this demo, we then select the first validator from the list and extract its public key.
+Next, we create a transaction to delegate stake to the selected validator using the `delegate` method of the StakeProgram. 
+The transaction returns the stake account's public key, the authorized public key, and the public key of the selected validator.
+The transaction is then sent and confirmed on the blockchain. At this point, we return the validator and Tx ID.
+Finally, the code retrieves the updated stake account activation status and logs it to the console.
+
+```
+const { Connection, clusterApiUrl, LAMPORTS_PER_SOL, Keypair, Authorized, Lockup, sendAndConfirmTransaction, StakeProgram, PublicKey } = require("@solana/web3.js");
+
+const main = async() => {
+    const connection = new Connection(clusterApiUrl('devnet'), 'processed');
+    const wallet = Keypair.generate();
+
+    const airdropSignature = await connection.requestAirdrop(
+        wallet.publicKey, 
+        1 * LAMPORTS_PER_SOL
+    );
+    await connection.confirmTransaction(airdropSignature);
+
+    const balance = await connection.getBalance(wallet.publicKey);
+    console.log('Balance:' + balance);
+
+    const stakeAccount = Keypair.generate();
+    const minimumRent = await connection.getMinimumBalanceForRentExemption(StakeProgram.space);
+    const ammountUserWantsToStake = 0.5 * LAMPORTS_PER_SOL;
+    const ammountToStake = minimumRent + ammountUserWantsToStake;
+
+    const createStakeAccountTx = StakeProgram.createAccount({
+        authorized: new Authorized(wallet.publicKey, wallet.publicKey),
+        fromPubkey: wallet.publicKey,
+        lamports: ammountToStake,
+        lockup: new Lockup(0,0, wallet.publicKey),
+        stakePubkey: stakeAccount.publicKey
+    });
+    
+    const createStakeAccountTxId = await sendAndConfirmTransaction(connection, createStakeAccountTx, [wallet, stakeAccount]);
+
+    console.log(`stake account creted. Tx Id: ${createStakeAccountTxId}`);
+    let stakeBalance = await connection.getBalance(stakeAccount.publicKey);
+    console.log(`Stake account balance: ${stakeBalance / LAMPORTS_PER_SOL} SOL`);
+
+    let stakeStatus = await connection.getStakeActivation(stakeAccount.publicKey);
+    console.log(`Stake account status: ${stakeStatus.state}`);
+
+    const validators = await connection.getVoteAccounts();
+    const selectedValidator = validators.current[0];
+    const selectedValidatorPubkey = new PublicKey(selectedValidator.votePubkey);
+    const delegateTx = StakeProgram.delegate({
+        stakePubkey: stakeAccount.publicKey,
+        authorizedPubkey: wallet.publicKey,
+        votePubkey: selectedValidatorPubkey,
+    });
+
+    const delegateTxId = await sendAndConfirmTransaction(connection, delegateTx, [wallet]);
+    console.log(`Stake account delegated to ${selectedValidatorPubkey}. Tx Id: ${delegateTxId}`);
+    stakeStatus = await connection.getStakeActivation(stakeAccount.publicKey);
+    console.log(`Stake account status: ${stakeStatus.state}`);
+};
+
+const runMain = async() => {
+    try {
+        await main();
+    } catch(error){
+        console.error(error);
+    }
+};
+
+runMain();
+```
 
 ## Section 5: Check Delegators 
 
