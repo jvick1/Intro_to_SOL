@@ -275,6 +275,10 @@ const runMain = async() => {
 runMain();
 ```
 
+```
+node delegate_stake.js
+```
+
 ## Section 5: Check Delegators 
 
 ## Section 6: Deactivate
