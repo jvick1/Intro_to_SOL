@@ -279,6 +279,8 @@ runMain();
 node delegate_stake.js
 ```
 
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/b227bab1-01cb-41cd-81d4-1d1148217627)
+
 ## Section 5: Check Delegators 
 
 ## Section 6: Deactivate
