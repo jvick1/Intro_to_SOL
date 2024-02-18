@@ -283,6 +283,68 @@ node delegate_stake.js
 
 ## Section 5: Check Delegators 
 
+Let's now make a new file called `get_delegators_by_validator.js` and paste the following in. 
+
+```
+const { Connection, clusterApiUrl, LAMPORTS_PER_SOL, Keypair, Authorized, Lockup, sendAndConfirmTransaction, StakeProgram, PublicKey } = require("@solana/web3.js");
+
+const main = async() => {
+    const connection = new Connection(clusterApiUrl('devnet'), 'processed');
+
+};
+
+const runMain = async() => {
+    try {
+        await main();
+    } catch(error){
+        console.error(error);
+    }
+};
+
+runMain();
+```
+
+There isn't really a built-in function to find the delegators so we gotta make it ourselves. We can find the stake program here https://docs.solanalabs.com/runtime/programs.
+First get the program id `const STATE_PROGRAM_ID = new PublicKey("Stake11111111111111111111111111111111111111");`. Then point to the validator we delegated to `const VOTE_PUB_KEY = "vgcDar2pryHvMgPkKaZfh8pQy4BJxv7SpwUG7zinWjG"`. Next, we'll get the accounts, apply a filter, and print out the count and a sample delegator.
+
+```
+const { Connection, clusterApiUrl, LAMPORTS_PER_SOL, Keypair, Authorized, Lockup, sendAndConfirmTransaction, StakeProgram, PublicKey } = require("@solana/web3.js");
+
+const main = async() => {
+    const connection = new Connection(clusterApiUrl('devnet'), 'processed');
+    const STATE_PROGRAM_ID = new PublicKey("Stake11111111111111111111111111111111111111");
+    const VOTE_PUB_KEY = "vgcDar2pryHvMgPkKaZfh8pQy4BJxv7SpwUG7zinWjG"
+    const accounts = await connection.getParsedProgramAccounts(STATE_PROGRAM_ID, {
+        filters: [
+            {dataSize: 200},
+            {
+                memcmp: {
+                    offset: 124,
+                    bytes: VOTE_PUB_KEY,
+                },
+            },
+        ],
+    });
+
+    console.log(`Total number of delegators found for ${VOTE_PUB_KEY} is: ${accounts.length}`);
+    if (accounts.length) {
+        console.log(`Sample delegator: ${JSON.stringify(accounts[0])}`);
+    }
+};
+
+const runMain = async() => {
+    try {
+        await main();
+    } catch(error){
+        console.error(error);
+    }
+};
+
+runMain();
+```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/f3791434-e99b-4ac3-bd8f-3ca781826abf)
+
 ## Section 6: Deactivate
 
 ## Section 7: Withdraw
