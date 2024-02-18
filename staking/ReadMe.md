@@ -350,38 +350,35 @@ runMain();
 For deactivating the account we'll again copy all of the `delegate_stake.js` and add the following code to the bottom of main:
 
 ```
-    const deactivateTx = StakeProgram.deactivate({
-        stakePubkey: stakeAccount.publicKey, 
-        authorizedPubkey: wallet.publicKey
-    });
-    const deactivateTxId = await sendAndConfirmTransaction(connection, deactivateTx, [wallet]);
-    console.log(`Stake account deactivated. Tx Id: ${deactivateTxId}`);
-    stakeStatus = await connection.getStakeActivation(stakeAccount.publicKey);
-    console.log(`Stake account status: ${stakeStatus.state}`);
+const deactivateTx = StakeProgram.deactivate({
+    stakePubkey: stakeAccount.publicKey, 
+    authorizedPubkey: wallet.publicKey
+});
+const deactivateTxId = await sendAndConfirmTransaction(connection, deactivateTx, [wallet]);
+console.log(`Stake account deactivated. Tx Id: ${deactivateTxId}`);
+stakeStatus = await connection.getStakeActivation(stakeAccount.publicKey);
+console.log(`Stake account status: ${stakeStatus.state}`);
 ```
 
 ![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/6e08f62b-5460-4464-9668-3fe1513f2789)
 
-
 ## Section 7: Withdraw
 
-Now let's open our `package.json` in VScode and make the following change `"type": "module",`.
+Copy all of the `dactivate_stake.js` file and paste it into a new file called `withdraw_stake.js`. Add the following code to the bottom of the main function.
 
 ```
-{
-  "name": "staking",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@solana/web3.js": "^1.89.1"
-  }
-}
+const withdrawTx = StakeProgram.withdraw({
+    stakePubkey: stakeAccount.publicKey, 
+    authorizedPubkey: wallet.publicKey,
+    toPubkey: wallet.publicKey,
+    lamports: stakeBalance,
+});
+
+const withdrawTxId = await sendAndConfirmTransaction(connection, withdrawTx, [wallet]);
+console.log(`Stake account withdrawn. Tx Id: ${withdrawTxId}`);
+
+stakeBalance = await connection.getBalance(stakeAccount.publicKey);
+console.log(`Stake account balance: ${stakeBalance / LAMPORTS_PER_SOL} SOL`);
 ```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/fc11427a-91f6-441d-a422-ae9d99688083)
