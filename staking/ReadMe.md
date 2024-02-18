@@ -347,6 +347,22 @@ runMain();
 
 ## Section 6: Deactivate
 
+For deactivating the account we'll again copy all of the `delegate_stake.js` and add the following code to the bottom of main:
+
+```
+    const deactivateTx = StakeProgram.deactivate({
+        stakePubkey: stakeAccount.publicKey, 
+        authorizedPubkey: wallet.publicKey
+    });
+    const deactivateTxId = await sendAndConfirmTransaction(connection, deactivateTx, [wallet]);
+    console.log(`Stake account deactivated. Tx Id: ${deactivateTxId}`);
+    stakeStatus = await connection.getStakeActivation(stakeAccount.publicKey);
+    console.log(`Stake account status: ${stakeStatus.state}`);
+```
+
+![image](https://github.com/jvick1/Intro_to_SOL/assets/32043066/6e08f62b-5460-4464-9668-3fe1513f2789)
+
+
 ## Section 7: Withdraw
 
 Now let's open our `package.json` in VScode and make the following change `"type": "module",`.
